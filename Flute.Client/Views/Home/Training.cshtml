@@ -1,0 +1,57 @@
+﻿<head>
+	<style>
+		
+	</style>
+</head>
+
+<body>
+	<h1>
+		Binary Neural Network Training
+	</h1>
+
+	<br />
+	<p>To get started, please upload a  .csv file that is no more than 2 mb.
+		<br />
+		
+	</p>
+
+	<br/>
+
+	<p>Example file format, <em>please ensure you title your headers as shown below.</em></p>
+	<br/>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Input</th>
+				<th scope="col">Data</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Mark</td>
+				<td>Otto</td>
+			</tr>
+			<tr>
+				<td>Jacob</td>
+				<td>Thornton</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br />
+
+	<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Training">
+		<div class="form-group">
+			<div class="col-md-10">
+				<p>Upload file</p>
+				<input type="file" name="file" accept=".csv" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-10">
+				<input type="submit" value="Upload" />
+			</div>
+		</div>
+	</form>
+</body>

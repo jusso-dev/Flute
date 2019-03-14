@@ -1,0 +1,14 @@
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Flute.Trainer.Service.deps.json
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Flute.Trainer.Service.runtimeconfig.json
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Flute.Trainer.Service.runtimeconfig.dev.json
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Flute.Trainer.Service.dll
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Flute.Trainer.Service.pdb
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.csprojAssemblyReference.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.csproj.CoreCompileInputs.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.RazorAssemblyInfo.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.RazorAssemblyInfo.cs
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.AssemblyInfoInputs.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.AssemblyInfo.cs
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.RazorTargetAssemblyInfo.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.dll
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.pdb

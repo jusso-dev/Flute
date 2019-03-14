@@ -1,0 +1,9 @@
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\bin\Debug\netstandard2.0\Flute.Shared.deps.json
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\bin\Debug\netstandard2.0\Flute.Shared.dll
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\bin\Debug\netstandard2.0\Flute.Shared.pdb
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\obj\Debug\netstandard2.0\Flute.Shared.csprojAssemblyReference.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\obj\Debug\netstandard2.0\Flute.Shared.csproj.CoreCompileInputs.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\obj\Debug\netstandard2.0\Flute.Shared.AssemblyInfoInputs.cache
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\obj\Debug\netstandard2.0\Flute.Shared.AssemblyInfo.cs
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\obj\Debug\netstandard2.0\Flute.Shared.dll
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Shared\obj\Debug\netstandard2.0\Flute.Shared.pdb
