@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Flute.Shared.Models;
 
 namespace Flute.Client.Interfaces
 {
 	public interface ITrainerService
 	{
-
+		Task<bool> QueueModel(ModelFile modelFile);
 	}
 }

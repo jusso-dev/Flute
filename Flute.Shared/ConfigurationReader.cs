@@ -12,6 +12,12 @@ namespace Flute.Shared
 	{
 		private static string keyVaultUri = Environment.GetEnvironmentVariable("KEYVAULT_ENDPOINT");
 
+
+		/// <summary>
+		/// Store all environment variables in central location
+		/// </summary>
+		public const string TrainerBaseApiUrl = "TrainerBaseApiUrl";
+
 		public ConfigurationReader()
 		{
 		}

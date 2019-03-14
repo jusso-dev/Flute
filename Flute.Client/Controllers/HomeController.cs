@@ -7,11 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 using Flute.Client.Models;
 using Microsoft.AspNetCore.Http;
 using Flute.Client.Constants;
+using Flute.Client.Interfaces;
 
 namespace Flute.Client.Controllers
 {
 	public class HomeController : Controller
 	{
+		private readonly ITrainerService _trainerService;
+		public HomeController(ITrainerService trainerService)
+		{
+			_trainerService = trainerService;
+		}
 		public IActionResult Index()
 		{
 			return View();
@@ -23,7 +29,7 @@ namespace Flute.Client.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult TrainingPost(IFormFile file)
+		public async Task<IActionResult> Training(IFormFile file)
 		{
 			try
 			{
@@ -36,12 +42,18 @@ namespace Flute.Client.Controllers
 				{
 					TempData["Error"] = ViewConstants.FileLengthExceededMessage;
 				}
-				else if (!file.ContentType.Contains(".csv"))
+				else if (file.ContentType != "application/vnd.ms-excel")
 				{
 					TempData["Error"] = ViewConstants.FileWrongFormatMessage;
 				}
 
-				return View();
+				var res = await _trainerService.QueueModel(new Shared.Models.ModelFile() { formFile = file });
+				if(!res)
+				{
+					TempData["Error"] = "Failed to upload Model, please try again later.";
+				}
+
+				return RedirectToAction(nameof(Training));
 			}
 			catch (Exception)
 			{

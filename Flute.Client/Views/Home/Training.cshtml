@@ -10,38 +10,52 @@
 	</h1>
 
 	<br />
-	<p>To get started, please upload a  .csv file that is no more than 2 mb.
+	<p>
+		To get started, please upload a  .csv file that is no more than 2 mb.
 		<br />
-		
+
 	</p>
 
-	<br/>
+	<br />
 
-	<p>Example file format, <em>please ensure you title your headers as shown below.</em></p>
-	<br/>
+	<p>
+		Example file format, <em>please ensure you title your headers as shown below.</em>
+		<br />
+		1 indicates positive in this case, and 0 indicates a negative review. You can upload any form of data, however the first column should be a string, followed by the second column being a int.
+	</p>
+	<br />
 
 	<table class="table table-striped">
 		<thead>
 			<tr>
 				<th scope="col">Input</th>
-				<th scope="col">Data</th>
+				<th scope="col">Label</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr>
-				<td>Mark</td>
-				<td>Otto</td>
+				<td>The movie today was great!</td>
+				<td>1</td>
 			</tr>
 			<tr>
-				<td>Jacob</td>
-				<td>Thornton</td>
+				<td>The movie sucked! worst movie ever.</td>
+				<td>0</td>
 			</tr>
 		</tbody>
 	</table>
 
 	<br />
 
-	<form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Training">
+	@if (!string.IsNullOrEmpty(TempData["Error"]?.ToString()))
+	{
+		<div style="margin-top:1%;margin-bottom:1%;" class="col-md-4">
+			<div class="alert alert-danger">
+				@TempData["Error"]?.ToString()
+			</div>
+		</div>
+	}
+
+	<form enctype="multipart/form-data" asp-controller="Home" asp-action="TrainingPost">
 		<div class="form-group">
 			<div class="col-md-10">
 				<p>Upload file</p>
@@ -50,7 +64,7 @@
 		</div>
 		<div class="form-group">
 			<div class="col-md-10">
-				<input type="submit" value="Upload" />
+				<input class="btn btn-info" type="submit" value="Upload" />
 			</div>
 		</div>
 	</form>

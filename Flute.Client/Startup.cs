@@ -4,6 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Flute.Client.Interfaces;
 using Flute.Client.Services;
+using Flute.Shared;
+using Flute.Shared.Interfaces;
+using Flute.Shared.Repoistory;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +38,8 @@ namespace Flute.Client
 				options.HttpOnly = HttpOnlyPolicy.Always;
 			});
 
+			services.AddSingleton<ITrainerRepoistroy, TrainerRepoistroy>();
+			services.AddSingleton<IConfigurationReader, ConfigurationReader>();
 			services.AddSingleton<ITrainerService, TrainerService>();
 
 			services.AddHttpClient();

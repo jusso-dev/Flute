@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Flute.Shared;
+using Flute.Shared.Interfaces;
+using Flute.Shared.Repoistory;
 using Flute.Trainer.Service.Interfaces;
 using Flute.Trainer.Service.Services;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +30,8 @@ namespace Flute.Trainer.Service
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+			services.AddSingleton<ITrainerRepoistroy, TrainerRepoistroy>();
+			services.AddSingleton<Shared.IConfigurationReader, ConfigurationReader>();
 			services.AddSingleton<ITrainerService, TrainerService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);

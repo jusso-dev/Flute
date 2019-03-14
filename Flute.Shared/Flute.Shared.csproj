@@ -5,14 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Azure.DocumentDB.Core" Version="2.2.1" />
     <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.3" />
     <PackageReference Include="Microsoft.Azure.Services.AppAuthentication" Version="1.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
 </Project>

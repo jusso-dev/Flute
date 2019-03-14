@@ -4,6 +4,6 @@ namespace Flute.Shared
 {
 	public interface IConfigurationReader
 	{
-		Task<string> ReadConfigurationAsync(string keyName, bool readFromKeyVault)
+		Task<string> ReadConfigurationAsync(string keyName, bool readFromKeyVault);
 	}
 }
