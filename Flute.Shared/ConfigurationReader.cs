@@ -17,6 +17,8 @@ namespace Flute.Shared
 		/// Store all environment variables in central location
 		/// </summary>
 		public const string TrainerBaseApiUrl = "TrainerBaseApiUrl";
+		public const string CosmosDBConnectionString = "CosmosDBConnectionString";
+		public const string PrimaryKey = "PrimaryKey";
 
 		public ConfigurationReader()
 		{

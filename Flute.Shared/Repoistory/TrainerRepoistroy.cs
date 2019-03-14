@@ -34,11 +34,11 @@ namespace Flute.Shared.Repoistory
 			EndpointUri = "https://localhost:8081";
 			PrimaryKey = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
 #else
-			EndpointUri = _config.ReadConfigurationAsync(keyName:"CosmosDBConnectionString", readFromKeyVault:false).Result;
-			PrimaryKey = _config.ReadConfigurationAsync(keyName:nameof(PrimaryKey), readFromKeyVault:true).Result;
+			EndpointUri = _config.ReadConfigurationAsync(keyName:ConfigurationReader.CosmosDBConnectionString, readFromKeyVault:false).Result;
+			PrimaryKey = _config.ReadConfigurationAsync(keyName:ConfigurationReader.PrimaryKey, readFromKeyVault:true).Result;
 #endif
 			_client = new DocumentClient(new Uri(EndpointUri), PrimaryKey, new ConnectionPolicy() { ConnectionMode = ConnectionMode.Direct, ConnectionProtocol = Protocol.Tcp });
-
+			
 			_client.CreateDatabaseIfNotExistsAsync(new Database() { Id = databaseName }).ConfigureAwait(false);
 			_client.CreateDocumentCollectionIfNotExistsAsync(UriFactory.CreateDatabaseUri(databaseName), new DocumentCollection() { Id = collectionName }).ConfigureAwait(false);
 
