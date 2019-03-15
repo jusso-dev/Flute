@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETStandard,Version=v2.0/",
-    "signature": "6e41d83c0aa32cc41c624006b0eb4631dd8c4fc6"
+    "signature": "68cb1e53e4ab78411758c45155f34a31f820fc15"
   },
   "compilationOptions": {},
   "targets": {
@@ -14,7 +14,8 @@
           "Microsoft.Azure.KeyVault": "3.0.3",
           "Microsoft.Azure.Services.AppAuthentication": "1.0.3",
           "Microsoft.Extensions.Logging.Abstractions": "2.2.0",
-          "NETStandard.Library": "2.0.3"
+          "NETStandard.Library": "2.0.3",
+          "WindowsAzure.Storage": "9.3.3"
         },
         "runtime": {
           "Flute.Shared.dll": {}
@@ -1388,6 +1389,18 @@
             "fileVersion": "1.0.24212.1"
           }
         }
+      },
+      "WindowsAzure.Storage/9.3.3": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "Newtonsoft.Json": "10.0.3"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {
+            "assemblyVersion": "9.3.2.0",
+            "fileVersion": "9.3.2.0"
+          }
+        }
       }
     }
   },
@@ -2159,6 +2172,13 @@
       "sha512": "sha512-WWkeNnBpTQ7p5FxL52L1V5USptJL7IIhbyMEQOxyGdtBzKnUY2JSiAydU4GY6JLLKDFVEs2XxB40rd6mNWLhFA==",
       "path": "system.xml.xmlserializer/4.0.11",
       "hashPath": "system.xml.xmlserializer.4.0.11.nupkg.sha512"
+    },
+    "WindowsAzure.Storage/9.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VUV8j6dzkU/7vDgk5k+ob5g7nnch2fNByr0p9aOxMGFGk+tAnTehrZ4qnClF04CVozP1GNN2zrnbsxCmr+iZBg==",
+      "path": "windowsazure.storage/9.3.3",
+      "hashPath": "windowsazure.storage.9.3.3.nupkg.sha512"
     }
   }
 }

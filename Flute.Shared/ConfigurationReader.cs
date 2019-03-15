@@ -19,6 +19,7 @@ namespace Flute.Shared
 		public const string TrainerBaseApiUrl = "TrainerBaseApiUrl";
 		public const string CosmosDBConnectionString = "CosmosDBConnectionString";
 		public const string PrimaryKey = "PrimaryKey";
+		public const string StorageConnectionString = "StorageConnectionString";
 
 		public ConfigurationReader()
 		{

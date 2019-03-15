@@ -46,6 +46,10 @@
       "frameworks": {
         "netcoreapp2.2": {
           "dependencies": {
+            "CsvHelper": {
+              "target": "Package",
+              "version": "[12.1.2, )"
+            },
             "Microsoft.AspNetCore.App": {
               "suppressParent": "All",
               "target": "Package",
@@ -118,6 +122,10 @@
               "target": "Package",
               "version": "[2.2.0, )"
             },
+            "Microsoft.Azure.DocumentDB.Core": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
             "Microsoft.Azure.KeyVault": {
               "target": "Package",
               "version": "[3.0.3, )"
@@ -126,11 +134,19 @@
               "target": "Package",
               "version": "[1.0.3, )"
             },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.0.3, )",
               "autoReferenced": true
+            },
+            "WindowsAzure.Storage": {
+              "target": "Package",
+              "version": "[9.3.3, )"
             }
           },
           "imports": [

@@ -46,6 +46,10 @@
               "target": "Package",
               "version": "[2.2.0, )"
             },
+            "Microsoft.Azure.DocumentDB.Core": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
             "Microsoft.Azure.KeyVault": {
               "target": "Package",
               "version": "[3.0.3, )"
@@ -54,11 +58,19 @@
               "target": "Package",
               "version": "[1.0.3, )"
             },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
             "NETStandard.Library": {
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.0.3, )",
               "autoReferenced": true
+            },
+            "WindowsAzure.Storage": {
+              "target": "Package",
+              "version": "[9.3.3, )"
             }
           },
           "imports": [
@@ -125,6 +137,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[2.2.0, )"
+            },
+            "Microsoft.ML": {
+              "target": "Package",
+              "version": "[0.11.0, )"
+            },
+            "Microsoft.ML.CpuMath": {
+              "target": "Package",
+              "version": "[0.11.0, )"
             },
             "Microsoft.NETCore.App": {
               "suppressParent": "All",

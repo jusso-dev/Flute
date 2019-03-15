@@ -7,6 +7,7 @@ using Flute.Client.Services;
 using Flute.Shared;
 using Flute.Shared.Interfaces;
 using Flute.Shared.Repoistory;
+using Flute.Shared.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
@@ -38,6 +39,7 @@ namespace Flute.Client
 				options.HttpOnly = HttpOnlyPolicy.Always;
 			});
 
+			services.AddSingleton<IBlobStorageService, BlobStorageService>();
 			services.AddSingleton<ITrainerRepoistroy, TrainerRepoistroy>();
 			services.AddSingleton<IConfigurationReader, ConfigurationReader>();
 			services.AddSingleton<ITrainerService, TrainerService>();

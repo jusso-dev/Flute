@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "62eb299c16d05260db973cf5db618e8eaaec4ad9"
+    "signature": "58fb7233e3dd99261fee72a8fe431cb64af21e36"
   },
   "compilationOptions": {
     "defines": [
@@ -28,6 +28,8 @@
           "Flute.Shared": "1.0.0",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
+          "Microsoft.ML": "0.11.0",
+          "Microsoft.ML.CpuMath": "0.11.0",
           "Microsoft.NETCore.App": "2.2.0",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.2.0"
         },
@@ -185,6 +187,20 @@
           "lib/netstandard1.3/Microsoft.CodeAnalysis.Workspaces.dll": {}
         }
       },
+      "Microsoft.Data.DataView/0.11.0": {
+        "dependencies": {
+          "System.Memory": "4.5.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.Data.DataView.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.Data.DataView.dll": {}
+        }
+      },
       "Microsoft.IdentityModel.Clients.ActiveDirectory/3.14.2": {
         "dependencies": {
           "NETStandard.Library": "2.0.3",
@@ -204,6 +220,155 @@
         "compile": {
           "lib/netstandard1.3/Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll": {},
           "lib/netstandard1.3/Microsoft.IdentityModel.Clients.ActiveDirectory.dll": {}
+        }
+      },
+      "Microsoft.ML/0.11.0": {
+        "dependencies": {
+          "Microsoft.Data.DataView": "0.11.0",
+          "Microsoft.ML.CpuMath": "0.11.0",
+          "Newtonsoft.Json": "11.0.2",
+          "System.CodeDom": "4.4.0",
+          "System.Collections.Immutable": "1.5.0",
+          "System.Memory": "4.5.1",
+          "System.Reflection.Emit.Lightweight": "4.3.0",
+          "System.Threading.Tasks.Dataflow": "4.8.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.ML.Core.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          },
+          "lib/netstandard2.0/Microsoft.ML.Data.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          },
+          "lib/netstandard2.0/Microsoft.ML.FastTree.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          },
+          "lib/netstandard2.0/Microsoft.ML.KMeansClustering.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          },
+          "lib/netstandard2.0/Microsoft.ML.PCA.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          },
+          "lib/netstandard2.0/Microsoft.ML.StandardLearners.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          },
+          "lib/netstandard2.0/Microsoft.ML.Transforms.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libFactorizationMachineNative.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libFastTreeNative.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/linux-x64/native/libLdaNative.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libFactorizationMachineNative.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libFastTreeNative.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libLdaNative.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/FactorizationMachineNative.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          },
+          "runtimes/win-x64/native/FastTreeNative.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          },
+          "runtimes/win-x64/native/LdaNative.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          },
+          "runtimes/win-x86/native/FactorizationMachineNative.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          },
+          "runtimes/win-x86/native/FastTreeNative.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          },
+          "runtimes/win-x86/native/LdaNative.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.ML.Core.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Data.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.FastTree.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.KMeansClustering.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.PCA.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.StandardLearners.dll": {},
+          "lib/netstandard2.0/Microsoft.ML.Transforms.dll": {}
+        }
+      },
+      "Microsoft.ML.CpuMath/0.11.0": {
+        "dependencies": {
+          "System.Memory": "4.5.1"
+        },
+        "runtime": {
+          "lib/netstandard2.0/Microsoft.ML.CpuMath.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "0.11.27505.13"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/linux-x64/native/libCpuMathNative.so": {
+            "rid": "linux-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/osx-x64/native/libCpuMathNative.dylib": {
+            "rid": "osx-x64",
+            "assetType": "native",
+            "fileVersion": "0.0.0.0"
+          },
+          "runtimes/win-x64/native/CpuMathNative.dll": {
+            "rid": "win-x64",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          },
+          "runtimes/win-x86/native/CpuMathNative.dll": {
+            "rid": "win-x86",
+            "assetType": "native",
+            "fileVersion": "0.11.27505.13"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/Microsoft.ML.CpuMath.dll": {}
         }
       },
       "Microsoft.NETCore.App/2.2.0": {
@@ -647,6 +812,17 @@
             "rid": "ubuntu.16.10-x64",
             "assetType": "native"
           }
+        }
+      },
+      "System.CodeDom/4.4.0": {
+        "runtime": {
+          "lib/netstandard2.0/System.CodeDom.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.25519.3"
+          }
+        },
+        "compile": {
+          "ref/netstandard2.0/System.CodeDom.dll": {}
         }
       },
       "System.Composition/1.0.31": {
@@ -1100,10 +1276,26 @@
           }
         }
       },
+      "System.Threading.Tasks.Dataflow/4.8.0": {},
       "System.Threading.ThreadPool/4.3.0": {
         "dependencies": {
           "System.Runtime": "4.3.0",
           "System.Runtime.Handles": "4.3.0"
+        }
+      },
+      "WindowsAzure.Storage/9.3.3": {
+        "dependencies": {
+          "NETStandard.Library": "2.0.3",
+          "Newtonsoft.Json": "11.0.2"
+        },
+        "runtime": {
+          "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {
+            "assemblyVersion": "9.3.2.0",
+            "fileVersion": "9.3.2.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
       },
       "Flute.Shared/1.0.0": {
@@ -1112,7 +1304,8 @@
           "Microsoft.Azure.DocumentDB.Core": "2.2.1",
           "Microsoft.Azure.KeyVault": "3.0.3",
           "Microsoft.Azure.Services.AppAuthentication": "1.0.3",
-          "Microsoft.Extensions.Logging.Abstractions": "2.2.0"
+          "Microsoft.Extensions.Logging.Abstractions": "2.2.0",
+          "WindowsAzure.Storage": "9.3.3"
         },
         "runtime": {
           "Flute.Shared.dll": {}
@@ -4099,12 +4292,33 @@
       "path": "microsoft.codeanalysis.workspaces.common/2.8.0",
       "hashPath": "microsoft.codeanalysis.workspaces.common.2.8.0.nupkg.sha512"
     },
+    "Microsoft.Data.DataView/0.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-Y6k4AAm8vDU1yJUJIQgZ/nIs4idLxGd5Q1MAk4w+bzkBKprNC4f99gRFEOFTW3V9IxfG/FGFIOJasLIi7e622g==",
+      "path": "microsoft.data.dataview/0.11.0",
+      "hashPath": "microsoft.data.dataview.0.11.0.nupkg.sha512"
+    },
     "Microsoft.IdentityModel.Clients.ActiveDirectory/3.14.2": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-KfcWG8h6JV3nyHv5YHlVujMwqH7CEYvCb1oKgwd+oKeXV8EFfYo9+hKvRAxg5Sikm14mVlouzLlm9wikmkncfQ==",
       "path": "microsoft.identitymodel.clients.activedirectory/3.14.2",
       "hashPath": "microsoft.identitymodel.clients.activedirectory.3.14.2.nupkg.sha512"
+    },
+    "Microsoft.ML/0.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2hHWaOtkem376MGjoXbifozAUApqf5b4afNvYAjiwPr+c5bgX4rqD78hqjwuBqHAa0hW5mfDGn5lxZy5wgUsLA==",
+      "path": "microsoft.ml/0.11.0",
+      "hashPath": "microsoft.ml.0.11.0.nupkg.sha512"
+    },
+    "Microsoft.ML.CpuMath/0.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-YVRhXti3PnLYkxHgzio6PQCe/99cmkTOkCE8fbNQevy3AUGsv1OvdG2hx1v1HHgjKw/bHY5p5+AVK3Wbr7MZ3Q==",
+      "path": "microsoft.ml.cpumath/0.11.0",
+      "hashPath": "microsoft.ml.cpumath.0.11.0.nupkg.sha512"
     },
     "Microsoft.NETCore.App/2.2.0": {
       "type": "package",
@@ -4323,6 +4537,13 @@
       "path": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl/4.3.2",
       "hashPath": "runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.2.nupkg.sha512"
     },
+    "System.CodeDom/4.4.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2sCCb7doXEwtYAbqzbF/8UAeDRMNmPaQbU2q50Psg1J9KzumyVVCgKQY8s53WIPTufNT0DpSe9QRvVjOzfDWBA==",
+      "path": "system.codedom/4.4.0",
+      "hashPath": "system.codedom.4.4.0.nupkg.sha512"
+    },
     "System.Composition/1.0.31": {
       "type": "package",
       "serviceable": true,
@@ -4470,12 +4691,26 @@
       "path": "system.threading.overlapped/4.0.1",
       "hashPath": "system.threading.overlapped.4.0.1.nupkg.sha512"
     },
+    "System.Threading.Tasks.Dataflow/4.8.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PSIdcgbyNv7FZvZ1I9Mqy6XZOwstYYMdZiXuHvIyc0gDyPjEhrrP9OvTGDHp+LAHp1RNSLjPYssyqox9+Kt9Ug==",
+      "path": "system.threading.tasks.dataflow/4.8.0",
+      "hashPath": "system.threading.tasks.dataflow.4.8.0.nupkg.sha512"
+    },
     "System.Threading.ThreadPool/4.3.0": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-k/+g4b7vjdd4aix83sTgC9VG6oXYKAktSfNIJUNGxPEj7ryEOfzHHhfnmsZvjxawwcD9HyWXKCXmPjX8U4zeSw==",
       "path": "system.threading.threadpool/4.3.0",
       "hashPath": "system.threading.threadpool.4.3.0.nupkg.sha512"
+    },
+    "WindowsAzure.Storage/9.3.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-VUV8j6dzkU/7vDgk5k+ob5g7nnch2fNByr0p9aOxMGFGk+tAnTehrZ4qnClF04CVozP1GNN2zrnbsxCmr+iZBg==",
+      "path": "windowsazure.storage/9.3.3",
+      "hashPath": "windowsazure.storage.9.3.3.nupkg.sha512"
     },
     "Flute.Shared/1.0.0": {
       "type": "project",
