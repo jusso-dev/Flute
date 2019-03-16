@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Flute.Client.Interfaces;
+﻿using Flute.Client.Interfaces;
 using Flute.Client.Services;
 using Flute.Shared;
 using Flute.Shared.Interfaces;
 using Flute.Shared.Repoistory;
 using Flute.Shared.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +42,20 @@ namespace Flute.Client
 			services.AddSingleton<IConfigurationReader, ConfigurationReader>();
 			services.AddSingleton<ITrainerService, TrainerService>();
 
+			services.AddAuthentication(sharedOptions =>
+			{
+				sharedOptions.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+				sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+				sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+			})
+			.AddCookie()
+			.AddGoogle(googleOptions => 
+			{
+				googleOptions.ClientId = "";
+				googleOptions.ClientSecret = "";
+				googleOptions.SaveTokens = true;
+			});
+
 			services.AddHttpClient();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -59,13 +71,14 @@ namespace Flute.Client
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
-				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
+
+			app.UseAuthentication();
 
 			app.UseMvc(routes =>
 			{

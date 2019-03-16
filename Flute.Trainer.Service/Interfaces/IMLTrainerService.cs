@@ -8,10 +8,9 @@ namespace Flute.Trainer.Service.Interfaces
 {
 	public interface IMLTrainerService
 	{
-		Task<TrainedModelPrediction> UseModelWithSingleItem(ITransformer model, Flute.Shared.Models.TrainedModel sample);
 		Task<ITransformer> GetReferenceToModel(Stream modelStream);
 		Task<bool> BuildAndTrainModel(IEnumerable<Flute.Shared.Models.TrainedModel> trainedModels);
 		Task<bool> SaveModelAsFile(ITransformer model);
-		Task<TrainedModelPrediction> UseModelWithSingleItem(string modelId, TrainedModel prediction);
+		Task<TrainedModelPrediction> UseModelWithSingleItem(Shared.Models.PredictionModel predictionModel);
 	}
 }

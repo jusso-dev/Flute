@@ -21,7 +21,7 @@
 	<p>
 		Example file format, <em>please ensure you title your headers as shown below.</em>
 		<br />
-		1 indicates positive in this case, and 0 indicates a negative review. You can upload any form of data, however the first column should be a string, followed by the second column being a int.
+		1 indicates positive in this case, and 0 indicates a negative review. You can upload any form of data, however the first column should be a string, followed by the second column being an integer.
 	</p>
 	<br />
 
@@ -48,7 +48,7 @@
 
 	@if (!string.IsNullOrEmpty(TempData["Error"]?.ToString()))
 	{
-		<div style="margin-top:1%;margin-bottom:1%;" class="col-md-4">
+		<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
 			<div class="alert alert-danger">
 				@TempData["Error"]?.ToString()
 			</div>
@@ -57,7 +57,7 @@
 
 	@if (!string.IsNullOrEmpty(TempData["Info"]?.ToString()))
 	{
-		<div style="margin-top:1%;margin-bottom:1%;" class="col-md-4">
+		<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
 			<div class="alert alert-info">
 				@TempData["Info"]?.ToString()
 			</div>

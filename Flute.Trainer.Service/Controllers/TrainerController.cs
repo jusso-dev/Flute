@@ -74,29 +74,39 @@ namespace Flute.Trainer.Service.Controllers
 			}
 		}
 
-		[HttpGet]
+		[HttpPost]
 		[Route(nameof(Predict))]
-		public async Task<IActionResult> Predict([FromQuery] string modelId)
+		public async Task<IActionResult> Predict([FromBody] PredictionModel model)
 		{
 			try
 			{
+				if(string.IsNullOrEmpty(model?.ModelId))
+				{
+					return new JsonResult($"Model id {model?.ModelId ?? "Not found"} was not found")
+					{
+						StatusCode = 404
+					};
+				}
+				
 				var blob = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile);
 				var oneBlob = blob
-					.Where(a => a == modelId)
+					.Where(a => a == model?.ModelId)
 					.FirstOrDefault();
+
+				var prediction = await _trainerService.UseModelWithSingleItem(model);
 
 				if(!string.IsNullOrEmpty(oneBlob))
 				{
-					return new JsonResult()
+					return new JsonResult(prediction)
 					{
 						StatusCode = 200
 					};
 				}
 				else
 				{
-					return new JsonResult(ex.Message)
+					return new JsonResult($"Model id {model?.ModelId} not found")
 					{
-						StatusCode = 500
+						StatusCode = 404
 					};
 				}
 			}

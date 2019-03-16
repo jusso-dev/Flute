@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Flute.Client.Constants;
 using Flute.Client.Interfaces;
 using Flute.Shared.Interfaces;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Flute.Client.Controllers
 {
@@ -17,8 +19,11 @@ namespace Flute.Client.Controllers
 			_trainerService = trainerService;
 			_blobService = blobStorageService;
 		}
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
+			var userInfo = User.FindFirst(a => a.Type == ClaimTypes.Email)?.Value;
+			var accessToken = await HttpContext.GetTokenAsync("access_token");
+
 			return View();
 		}
 
@@ -52,9 +57,9 @@ namespace Flute.Client.Controllers
 					TempData["Error"] = "Failed to upload Model, please try again later.";
 				}
 
-				TempData["Info"] = "Model queued for training successfully.";
+				TempData["Info"] = "Model trained successfully. See 'Models' in the navbar, to consume you're newly trained model.";
 
-				return RedirectToAction(nameof(Training));
+				return View();
 			}
 			catch (Exception ex)
 			{
@@ -64,7 +69,7 @@ namespace Flute.Client.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> ListTrainedModels()
+		public async Task<IActionResult> TestPrediction([FromQuery] string modelId)
 		{
 			try
 			{

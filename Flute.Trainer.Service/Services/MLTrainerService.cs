@@ -63,12 +63,12 @@ namespace Flute.Trainer.Service.Services
 			}
 		}
 
-		public async Task<TrainedModelPrediction> UseModelWithSingleItem(string modelId, TrainedModel prediction)
+		public async Task<TrainedModelPrediction> UseModelWithSingleItem(Shared.Models.PredictionModel predictionModel)
 		{
 			// Step 1: download file from blob storage
 			var blobs = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile);
 			var singleBlob = blobs
-				.Where(a => a == modelId)
+				.Where(a => a == predictionModel?.ModelId)
 				.FirstOrDefault();
 
 			// Step 2: get reference to downloaded blob
@@ -85,7 +85,7 @@ namespace Flute.Trainer.Service.Services
 
 				TrainedModel sampleStatement = new TrainedModel
 				{
-					Input = prediction?.Input
+					Input = predictionModel.PredictionInput?.Input
 				};
 
 				var resultprediction = predictionFunction.Predict(sampleStatement);
