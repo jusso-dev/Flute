@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CsvHelper;
 using Flute.Shared.Interfaces;
 using Flute.Shared.Models;
+using Flute.Shared.Services;
 using Flute.Trainer.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +17,11 @@ namespace Flute.Trainer.Service.Controllers
     {
 
 		private readonly IMLTrainerService _trainerService;
-		private readonly ITrainerRepoistroy _trainerRepo;
-		public TrainerController(IMLTrainerService mLTrainerService, ITrainerRepoistroy trainerRepoistroy)
+		private readonly IBlobStorageService _blobService;
+		public TrainerController(IMLTrainerService mLTrainerService, IBlobStorageService blobStorageService)
 		{
 			_trainerService = mLTrainerService;
-			_trainerRepo = trainerRepoistroy;
+			_blobService = blobStorageService;
 		}
 
 		/// <summary>
@@ -31,26 +34,67 @@ namespace Flute.Trainer.Service.Controllers
 		{
 			try
 			{
-				// Step 1: get reference to all objects in database for training
-				var modelObjects = _trainerRepo.ListAllRecords(1000).Result;
+				// Step 1: download file from blob storage for training
+				var blobs = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.TrainingFile);
 
-				// Step 2: Convert dto objects to objects that the trainer can accept
-				List<TrainedModel> listOfTrainerObjects = new List<TrainedModel>();
-				modelObjects.ForEach(a =>
+				// Step 2: get reference to downloaded blob
+				using (Stream stream = new MemoryStream())
 				{
-					listOfTrainerObjects.Add(new TrainedModel() { Input = a.Input, Label = a.Label } );
-				});
+					var blobObject = await _blobService.DownloadBlob(blobs.FirstOrDefault(), stream);
+					stream.Seek(0, SeekOrigin.Begin);
 
-				// Step 3: train model on objects
-				var trainedModelSuccessfully = await _trainerService.BuildAndTrainModel(listOfTrainerObjects);
+					using (var reader = new StreamReader(stream))
+					using (var csv = new CsvReader(reader))
+					{
+						var records = csv.GetRecords<TrainedModel>();
 
-				if(trainedModelSuccessfully)
+						// Step 3: train model on objects
+						var trainedModelSuccessfully = await _trainerService.BuildAndTrainModel(records);
+
+						if (trainedModelSuccessfully)
+						{
+							return new OkObjectResult("Accepted. Training commencing..");
+						}
+						else
+						{
+							return new JsonResult("Something went wrong.")
+							{
+								StatusCode = 500
+							};
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				return new JsonResult(ex.Message)
 				{
-					return new OkObjectResult("Accepted. Training commencing..");
+					StatusCode = 500
+				};
+			}
+		}
+
+		[HttpGet]
+		[Route(nameof(Predict))]
+		public async Task<IActionResult> Predict([FromQuery] string modelId)
+		{
+			try
+			{
+				var blob = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile);
+				var oneBlob = blob
+					.Where(a => a == modelId)
+					.FirstOrDefault();
+
+				if(!string.IsNullOrEmpty(oneBlob))
+				{
+					return new JsonResult()
+					{
+						StatusCode = 200
+					};
 				}
 				else
 				{
-					return new JsonResult("Something went wrong.")
+					return new JsonResult(ex.Message)
 					{
 						StatusCode = 500
 					};

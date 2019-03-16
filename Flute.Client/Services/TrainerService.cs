@@ -3,11 +3,11 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using CsvHelper;
 using Flute.Client.Interfaces;
 using Flute.Shared;
 using Flute.Shared.Interfaces;
 using Flute.Shared.Models;
+using Flute.Shared.Services;
 
 namespace Flute.Client.Services
 {
@@ -15,15 +15,15 @@ namespace Flute.Client.Services
 	{
 		private readonly IConfigurationReader _config;
 		private readonly IHttpClientFactory _client;
-		private readonly ITrainerRepoistroy _trainerRepo;
+		private readonly IBlobStorageService _blobStorageService;
 
 		private string ApiBaseUrl = string.Empty;
 		public TrainerService(IConfigurationReader configurationReader, IHttpClientFactory httpClientFactory,
-							  ITrainerRepoistroy trainerRepoistroy)
+							  IBlobStorageService blobStorageService)
 		{
 			_config = configurationReader;
 			_client = httpClientFactory;
-			_trainerRepo = trainerRepoistroy;
+			_blobStorageService = blobStorageService;
 
 			ApiBaseUrl = _config.ReadConfigurationAsync(ConfigurationReader.TrainerBaseApiUrl, false).Result;
 		}
@@ -36,18 +36,13 @@ namespace Flute.Client.Services
 		{
 			try
 			{
-				// Step 1: Write file contents to database
-				using(var streamContent = modelFile.formFile.OpenReadStream())
-				using (var reader = new StreamReader(streamContent))
-				using (var csv = new CsvReader(reader))
+				// Step 1: Write file to blob storage
+				using(Stream stream = new MemoryStream())
 				{
-					csv.Configuration.HasHeaderRecord = true;
-					var records = csv.GetRecords<TrainedModel>();
+					await modelFile.formFile.CopyToAsync(stream);
+					stream.Seek(0, SeekOrigin.Begin);
 
-					foreach (var item in records)
-					{
-						await _trainerRepo.InsertRecord(new TrainedModelCosmosDB() { Input = item.Input, Label = item.Label });
-					}
+					await _blobStorageService.UploadBlob(stream, BlobStorageService.TypeOfBlobUpload.TrainingFile, modelFile.formFile.FileName);
 				}
 
 				// Step 2: Kick off training by triggering backend, might change this to be redis, not sure yet...

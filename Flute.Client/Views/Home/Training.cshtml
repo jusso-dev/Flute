@@ -55,6 +55,15 @@
 		</div>
 	}
 
+	@if (!string.IsNullOrEmpty(TempData["Info"]?.ToString()))
+	{
+		<div style="margin-top:1%;margin-bottom:1%;" class="col-md-4">
+			<div class="alert alert-info">
+				@TempData["Info"]?.ToString()
+			</div>
+		</div>
+	}
+
 	<form enctype="multipart/form-data" asp-controller="Home" asp-action="TrainingPost">
 		<div class="form-group">
 			<div class="col-md-10">

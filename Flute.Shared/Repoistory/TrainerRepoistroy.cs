@@ -49,9 +49,17 @@ namespace Flute.Shared.Repoistory
 		{
 			try
 			{
-				var result = await _client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), model);
-				if (result.StatusCode == System.Net.HttpStatusCode.OK || result.StatusCode == System.Net.HttpStatusCode.Created)
+				ResourceResponse<Document> response;
+				response = await _client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), model);
+				if (response.StatusCode == System.Net.HttpStatusCode.OK || response.StatusCode == System.Net.HttpStatusCode.Created)
 				{
+					return true;
+				}
+				else if((int)response.StatusCode == 429)
+				{
+					await Task.Delay(1000);
+					response = await _client.CreateDocumentAsync(UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), model);
+
 					return true;
 				}
 				else
@@ -100,7 +108,7 @@ namespace Flute.Shared.Repoistory
 			try
 			{
 				List<TrainedModelCosmosDB> userQuery = _client.CreateDocumentQuery<TrainedModelCosmosDB>(
-					UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), new FeedOptions() { MaxItemCount = numberOfItemsToTake })
+					UriFactory.CreateDocumentCollectionUri(databaseName, collectionName), new FeedOptions() { MaxItemCount = numberOfItemsToTake, EnableCrossPartitionQuery = true })
 					.OrderByDescending(a => a.TimeStamp)
 					.Take(numberOfItemsToTake)
 					.ToList();

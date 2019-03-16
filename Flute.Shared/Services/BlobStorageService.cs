@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Flute.Shared.Interfaces;
 using Microsoft.WindowsAzure.Storage;
@@ -25,9 +26,11 @@ namespace Flute.Shared.Services
 #else
 			storageConnectionString = _config.ReadConfigurationAsync(ConfigurationReader.StorageConnectionString, true).Result;
 #endif
+			CloudStorageAccount.TryParse(storageConnectionString, out storageAccount);
+
 			cloudBlobClient = storageAccount.CreateCloudBlobClient();
 
-			 cloudBlobContainer = cloudBlobClient.GetContainerReference("ml-models");
+			cloudBlobContainer = cloudBlobClient.GetContainerReference("ml-models");
 			cloudBlobContainer.CreateIfNotExistsAsync().Wait();
 
 			BlobContainerPermissions permissions = new BlobContainerPermissions
@@ -38,12 +41,29 @@ namespace Flute.Shared.Services
 			cloudBlobContainer.SetPermissionsAsync(permissions).Wait();
 		}
 
-		public async Task<bool> UploadBlob(Stream stream)
+		/// <summary>
+		/// Determine naming convention for blob to be uploaded
+		/// </summary>
+		public enum TypeOfBlobUpload
+		{
+			TrainingFile,
+			ModelFile
+		}
+
+		public async Task<bool> UploadBlob(Stream stream, TypeOfBlobUpload typeOfBlobUpload, string fileName = null)
 		{
 			try
 			{
-				CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference($"Model-{DateTime.Now}.zip");
-				await cloudBlockBlob.UploadFromStreamAsync(stream);
+				if(typeOfBlobUpload == TypeOfBlobUpload.ModelFile)
+				{
+					CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference($"Model-{Guid.NewGuid()}.zip");
+					await cloudBlockBlob.UploadFromStreamAsync(stream);
+				}
+				else
+				{
+					CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(fileName);
+					await cloudBlockBlob.UploadFromStreamAsync(stream);
+				}
 
 				return true;
 			}
@@ -71,23 +91,32 @@ namespace Flute.Shared.Services
 			}
 		}
 
-		public async Task<List<IListBlobItem>> ListAllBlobs()
+		public async Task<List<string>> ListBlobs(TypeOfBlobUpload typeOfBlobUpload)
 		{
 			try
 			{
-				BlobContinuationToken blobContinuationToken = null;
-				List<IListBlobItem> blobs = new List<IListBlobItem>();
+				BlobContinuationToken continuationToken = null;
 
-				do
+				var blobResultSegment = await cloudBlobContainer.ListBlobsSegmentedAsync(continuationToken);
+
+				List<string> blobNames = new List<string>();
+
+				if(typeOfBlobUpload == TypeOfBlobUpload.TrainingFile)
 				{
-					var results = await cloudBlobContainer.ListBlobsSegmentedAsync(null, blobContinuationToken);
-					// Get the value of the continuation token returned by the listing call.
-					blobContinuationToken = results.ContinuationToken;
-					blobs.AddRange(results.Results);
+					// Select blobs by name, where the name suggests the file is the training file
+					blobNames.AddRange(blobResultSegment.Results
+						.Where(a => a.Uri.Segments.Last().Contains(".csv"))
+						.Select(i => i.Uri.Segments.Last()).ToList());
+				}
+				else
+				{
+					// Select blobs by name, where the name suggests the file is the model file
+					blobNames.AddRange(blobResultSegment.Results
+						.Where(a => a.Uri.Segments.Last().Contains(".zip"))
+						.Select(i => i.Uri.Segments.Last()).ToList());
+				}
 
-				} while (blobContinuationToken != null);
-
-				return blobs;
+				return blobNames;
 			}
 			catch (Exception ex)
 			{

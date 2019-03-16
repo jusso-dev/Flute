@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Flute.Shared.Interfaces;
+using Flute.Shared.Services;
 using Flute.Trainer.Service.Interfaces;
 using Flute.Trainer.Service.Model;
 using Microsoft.Data.DataView;
@@ -25,7 +26,7 @@ namespace Flute.Trainer.Service.Services
 		{
 			PredictionEngine<TrainedModel, TrainedModelPrediction> predictionFunction = model.CreatePredictionEngine<TrainedModel, TrainedModelPrediction>(mlContext);
 
-			var resultprediction = predictionFunction.Predict(new TrainedModel() { Input = sample.Input, Label = sample.Label });
+			var resultprediction = predictionFunction.Predict(new TrainedModel() { Input = sample.Input, Label = Convert.ToBoolean(sample.Label) });
 
 			return Task.FromResult(resultprediction);
 		}
@@ -35,17 +36,16 @@ namespace Flute.Trainer.Service.Services
 			return Task.FromResult(mlContext.Model.Load(modelStream));
 		}
 
-		public async Task<bool> BuildAndTrainModel(IEnumerable<Flute.Shared.Models.TrainedModel> trainedModels)
+		public async Task<bool> BuildAndTrainModel(IEnumerable<Flute.Shared.Models.TrainedModel> listOfTrainingObjects)
 		{
 			try
 			{
 				List<TrainedModel> trainedModel = new List<TrainedModel>();
-				foreach(var item in trainedModels)
+				foreach(var item in listOfTrainingObjects.ToList())
 				{
-					trainedModel.Add(new TrainedModel() { Input = item?.Input, Label = item.Label });
+					trainedModel.Add(new TrainedModel() { Input = item?.Input, Label = Convert.ToBoolean(item.Label) });
 				}
-
-
+				
 				IDataView splitTrainSet = mlContext.Data.LoadFromEnumerable<TrainedModel>(trainedModel);
 
 				var pipeline = mlContext.Transforms.Text.FeaturizeText(outputColumnName: DefaultColumnNames.Features, inputColumnName: nameof(TrainedModel.Input))
@@ -63,12 +63,45 @@ namespace Flute.Trainer.Service.Services
 			}
 		}
 
+		public async Task<TrainedModelPrediction> UseModelWithSingleItem(string modelId, TrainedModel prediction)
+		{
+			// Step 1: download file from blob storage
+			var blobs = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile);
+			var singleBlob = blobs
+				.Where(a => a == modelId)
+				.FirstOrDefault();
+
+			// Step 2: get reference to downloaded blob
+			using (Stream stream = new MemoryStream())
+			{
+				var blobObject = await _blobService.DownloadBlob(singleBlob, stream);
+				stream.Seek(0, SeekOrigin.Begin);
+
+				await blobObject.CopyToAsync(stream);
+
+				var model = mlContext.Model.Load(stream);
+
+				PredictionEngine<TrainedModel, TrainedModelPrediction> predictionFunction = model.CreatePredictionEngine<TrainedModel, TrainedModelPrediction>(mlContext);
+
+				TrainedModel sampleStatement = new TrainedModel
+				{
+					Input = prediction?.Input
+				};
+
+				var resultprediction = predictionFunction.Predict(sampleStatement);
+
+				return resultprediction;
+			}
+		}
+
 		public async Task<bool> SaveModelAsFile(ITransformer model)
 		{
-			using (var fs = new MemoryStream())
+			using (var stream = new MemoryStream())
 			{
-				mlContext.Model.Save(model, fs);
-				await _blobService.UploadBlob(fs);
+				mlContext.Model.Save(model, stream);
+				stream.Seek(0, SeekOrigin.Begin);
+
+				await _blobService.UploadBlob(stream, BlobStorageService.TypeOfBlobUpload.ModelFile);
 			}
 
 			return true;

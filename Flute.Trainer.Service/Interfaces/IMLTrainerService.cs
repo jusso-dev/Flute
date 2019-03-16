@@ -12,5 +12,6 @@ namespace Flute.Trainer.Service.Interfaces
 		Task<ITransformer> GetReferenceToModel(Stream modelStream);
 		Task<bool> BuildAndTrainModel(IEnumerable<Flute.Shared.Models.TrainedModel> trainedModels);
 		Task<bool> SaveModelAsFile(ITransformer model);
+		Task<TrainedModelPrediction> UseModelWithSingleItem(string modelId, TrainedModel prediction);
 	}
 }

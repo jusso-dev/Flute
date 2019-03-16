@@ -7,18 +7,16 @@ namespace Flute.Trainer.Service.Model
 		[LoadColumn(0)]
 		public string Input { get; set; }
 		[LoadColumn(1), ColumnName("Label")]
-		public float Label { get; set; }
+		public bool Label { get; set; }
 	}
 
 	public class TrainedModelPrediction
 	{
 		[ColumnName("PredictedLabel")]
-		public float Prediction { get; set; }
-
-		[ColumnName("Probability")]
+		public bool Prediction { get; set; }
+		
 		public float Probability { get; set; }
-
-		[ColumnName("Score")]
+		
 		public float Score { get; set; }
 	}
 }
