@@ -21,6 +21,7 @@
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
 			<div class="container">
+				<a style="margin-right:5%;" class="nav-link text-light">Welcome back @User.Identity?.Name.Split(" ")[0]</a>
 				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Flute</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +35,18 @@
 						<li class="nav-item">
 							<a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Training">Training</a>
 						</li>
+						@if (User.Identity.IsAuthenticated)
+						{
+							<li class="nav-item">
+								<a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+							</li>
+						}
+						else
+						{
+							<li class="nav-item" style="float:right;">
+								<a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+							</li>
+						}
 					</ul>
 				</div>
 			</div>

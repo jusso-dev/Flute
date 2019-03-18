@@ -5,11 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Flute.Client.Constants;
 using Flute.Client.Interfaces;
 using Flute.Shared.Interfaces;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 
 namespace Flute.Client.Controllers
 {
+	[Authorize]
 	public class HomeController : Controller
 	{
 		private readonly ITrainerService _trainerService;
@@ -19,19 +20,25 @@ namespace Flute.Client.Controllers
 			_trainerService = trainerService;
 			_blobService = blobStorageService;
 		}
+		
+		[AllowAnonymous]
 		public async Task<IActionResult> Index()
 		{
-			var userInfo = User.FindFirst(a => a.Type == ClaimTypes.Email)?.Value;
-			var accessToken = await HttpContext.GetTokenAsync("access_token");
-
+			var claims = User.Claims;
+			foreach(var item in claims)
+			{
+				
+			}
 			return View();
 		}
 
+		[Authorize]
 		public IActionResult Training()
 		{
 			return View();
 		}
 
+		[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> Training(IFormFile file)
 		{
@@ -68,6 +75,7 @@ namespace Flute.Client.Controllers
 			}
 		}
 
+		[Authorize]
 		[HttpGet]
 		public async Task<IActionResult> TestPrediction([FromQuery] string modelId)
 		{

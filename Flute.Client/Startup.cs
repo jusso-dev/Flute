@@ -1,8 +1,10 @@
 ﻿using Flute.Client.Interfaces;
+using Flute.Client.Models;
+using Flute.Client.Repoistory;
 using Flute.Client.Services;
 using Flute.Shared;
 using Flute.Shared.Interfaces;
-using Flute.Shared.Repoistory;
+using Flute.Shared.Models;
 using Flute.Shared.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,6 +32,8 @@ namespace Flute.Client
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			var _config = new ConfigurationReader();
+
 			services.Configure<CookiePolicyOptions>(options =>
 			{
 				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -38,9 +43,11 @@ namespace Flute.Client
 			});
 
 			services.AddSingleton<IBlobStorageService, BlobStorageService>();
-			services.AddSingleton<ITrainerRepoistroy, TrainerRepoistroy>();
 			services.AddSingleton<IConfigurationReader, ConfigurationReader>();
 			services.AddSingleton<ITrainerService, TrainerService>();
+
+			services.AddScoped<IUserRepoistory, UserRepoistory>();
+			services.AddScoped<ITrainedModelRepoistory, TrainedModelRepoistory>();
 
 			services.AddAuthentication(sharedOptions =>
 			{
@@ -51,14 +58,19 @@ namespace Flute.Client
 			.AddCookie()
 			.AddGoogle(googleOptions => 
 			{
-				googleOptions.ClientId = "";
-				googleOptions.ClientSecret = "";
+				googleOptions.ClientId = _config.ReadConfigurationAsync(ConfigurationReader.GoogleClientId, readFromKeyVault:false).Result;
+				googleOptions.ClientSecret = _config.ReadConfigurationAsync(ConfigurationReader.GoogleClintSecret, readFromKeyVault:true).Result;
 				googleOptions.SaveTokens = true;
 			});
 
 			services.AddHttpClient();
 
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+			string connectionString = string.Empty;
+			connectionString = @"Server=(localdb)\mssqllocaldb;Database=FluteUsers;Trusted_Connection=True;ConnectRetryCount=0";
+			services.AddDbContext<UserDbContextContext>
+				(options => options.UseSqlServer(connectionString));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

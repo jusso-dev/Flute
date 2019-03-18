@@ -15,5 +15,3 @@ C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreap
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Flute.Shared.dll
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Flute.Shared.pdb
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\obj\Debug\netcoreapp2.2\Flute.Trainer.Service.csproj.CopyComplete
-C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\Microsoft.Azure.Documents.ServiceInterop.dll
-C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Trainer.Service\bin\Debug\netcoreapp2.2\DocumentDB.Spatial.Sql.dll

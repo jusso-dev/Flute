@@ -11,5 +11,6 @@ namespace Flute.Shared.Models
 	{
 		public TrainedModel PredictionInput { get; set; }
 		public string ModelId { get; set; }
+		public string ApiKey { get; set; }
 	}
 }

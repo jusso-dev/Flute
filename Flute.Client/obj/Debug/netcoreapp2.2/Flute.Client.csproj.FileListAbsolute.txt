@@ -30,5 +30,3 @@ C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Client\obj\Debug\netcoreapp2.2\Flut
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Client\obj\Debug\netcoreapp2.2\Razor\Views\Home\Training.g.cshtml.cs
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Client\bin\Debug\netcoreapp2.2\Flute.Shared.dll
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Client\bin\Debug\netcoreapp2.2\Flute.Shared.pdb
-C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Client\bin\Debug\netcoreapp2.2\Microsoft.Azure.Documents.ServiceInterop.dll
-C:\Users\A_Justin.Midler\Desktop\Flute\Flute.Client\bin\Debug\netcoreapp2.2\DocumentDB.Spatial.Sql.dll

@@ -8,6 +8,7 @@ using Flute.Shared.Interfaces;
 using Flute.Shared.Models;
 using Flute.Shared.Services;
 using Flute.Trainer.Service.Interfaces;
+using Flute.Trainer.Service.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Flute.Trainer.Service.Controllers
@@ -46,7 +47,7 @@ namespace Flute.Trainer.Service.Controllers
 					using (var reader = new StreamReader(stream))
 					using (var csv = new CsvReader(reader))
 					{
-						var records = csv.GetRecords<TrainedModel>();
+						var records = csv.GetRecords<Shared.Models.TrainedModel>();
 
 						// Step 3: train model on objects
 						var trainedModelSuccessfully = await _trainerService.BuildAndTrainModel(records);
@@ -97,7 +98,7 @@ namespace Flute.Trainer.Service.Controllers
 
 				if(!string.IsNullOrEmpty(oneBlob))
 				{
-					return new JsonResult(prediction)
+					return new JsonResult(new TrainedModelOutput() { Input = model.PredictionInput.Input, Label = Convert.ToInt32(prediction.Prediction), ModelId = model.ModelId, Score = prediction.Probability })
 					{
 						StatusCode = 200
 					};

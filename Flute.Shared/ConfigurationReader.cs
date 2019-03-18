@@ -10,16 +10,20 @@ namespace Flute.Shared
 	/// </summary>
 	public class ConfigurationReader : IConfigurationReader
 	{
-		private static string keyVaultUri = Environment.GetEnvironmentVariable("KEYVAULT_ENDPOINT");
+		private static string keyVaultUri = Environment.GetEnvironmentVariable("FLUTE_KEYVAULT_ENDPOINT");
 
 
 		/// <summary>
 		/// Store all environment variables in central location
+		/// If the const is marked KEYVAULT=True, then it's value is retrieved from Azure Key Vault, otherwise it's retrieved from env variables.
 		/// </summary>
+
 		public const string TrainerBaseApiUrl = "TrainerBaseApiUrl";
-		public const string CosmosDBConnectionString = "CosmosDBConnectionString";
-		public const string PrimaryKey = "PrimaryKey";
+		// KEYVAULT=True
 		public const string StorageConnectionString = "StorageConnectionString";
+		public const string GoogleClientId = "GoogleClientId";
+		// KEYVAULT=True
+		public const string GoogleClintSecret = "GoogleClintSecret";
 
 		public ConfigurationReader()
 		{
