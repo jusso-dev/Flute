@@ -1,0 +1,64 @@
+﻿@model Flute.Client.ViewModels.TrainedModelsViewModel
+
+<head>
+	<style>
+		
+	</style>
+</head>
+
+<body>
+	<section style="margin-top:2%;">
+		<div class="text-center">
+			<h1>
+				Binary Neural Network Trained Models
+			</h1>
+
+			<br />
+
+			<p>
+				Below, you can see a list of trained Models, as well as an example on how to consume the model.
+			</p>
+			<br />
+
+			<div class="col-md-4" style="margin-left:auto;margin-right:auto">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Model ID</th>
+							<th scope="col">Model Uploaded Time</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var item in Model.ListOfTrainedModels)
+						{
+							<tr>
+								<td>@item.ModelId</td>
+								<td>@item.ModelUploadDateTime</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+
+			<br />
+
+			@if (!string.IsNullOrEmpty(TempData["Error"]?.ToString()))
+			{
+				<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
+					<div class="alert alert-danger">
+						@TempData["Error"]?.ToString()
+					</div>
+				</div>
+			}
+
+			@if (!string.IsNullOrEmpty(TempData["Info"]?.ToString()))
+			{
+				<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
+					<div class="alert alert-info">
+						@TempData["Info"]?.ToString()
+					</div>
+				</div>
+			}
+		</div>
+	</section>
+</body>

@@ -1,15 +1,18 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
 }
 
+
+<!--Header section-->
+<section style="background-color:#7218D0;color:white;height:100%;">
 	<div class="text-center">
-		<h1 style="margin-top:5%;" class="display-2">Welcome to Flute</h1>
+		<h1 style="margin-top:2%;" class="display-2">Welcome to Flute</h1>
 		<br />
 		<h4>What is <em>Flute?</em></h4>
 
 		<br />
 
-		<p>FLute is a Machine Learning platform that allows user's to upload a labeled cs dataset, and then train a Binary Neural Network, which you can then consume using a REST API.</p>
+		<p>Flute is a Machine Learning platform that allows user's to upload a labeled cs dataset, and then train a Binary Neural Network, which you can then consume using a REST API.</p>
 
 		<br />
 
@@ -19,3 +22,104 @@
 		<p>To get started, click the <strong><em>Training</em></strong> tab in the navbar, or click <a asp-controller="Home" asp-action="Training">here</a>.</p>
 
 	</div>
+</section>
+
+<!--About section-->
+<section>
+	<div class="text-center">
+
+		<h4 style="margin-top:2%;" class="display-4"><em>Ease of use</em></h4>
+		<br />
+
+		<p>
+			Flute doesn't promise to save to world or best the 'fastest', 'best' platform there was, it just works.
+			<br />
+			Flute aims to enable people who have the ability to create a simple csv file, the ability to train Machine Learning models.
+		</p>
+
+		<br />
+
+		<h4 class="display-4"><em>Consumable results</em></h4>
+
+		<br />
+
+		<p>
+			Once you have trained a model using Flute, you have the ability to immediately start using it by calling our REST API end-point (see Models page for more information).
+			<br />
+			Data Scientist are very good at feature extraction, training and demonstrating a model, but they aren't ops, and can't deploy and scale your model for you.
+		</p>
+	</div>
+</section>
+
+<!--Features section-->
+<section>
+
+	<div class="text-center" style="margin-top:2%;margin-bottom:2%;">
+		<h4 class="display-4"><strong>Benefits</strong></h4>
+	</div>
+
+	<div class="row" style="margin-top:2%;">
+		<div class="col-md-4">
+			<div class="card">
+				<div class="text-center">
+					<div class="card-body" style="background-color:#7218D0;color:white;">
+						<i style="margin-bottom:1%;" class="far fa-clock fa-5x"></i>
+						<h5 class="card-title">Time</h5>
+						<p class="card-text">Time is valuable, spending time organising data, training models, publishing models to Production, tracking models uploaded, scaling the model in Production all take time.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="text-center">
+					<div class="card-body" style="background-color:#7218D0;color:white;">
+						<i style="margin-bottom:1%" class="far fa-flushed fa-5x"></i>
+						<h5 class="card-title">Save money</h5>
+						<p class="card-text">Data Scientists can be expensive, Flute is a platform anyone can use to train and publish their model.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="card">
+				<div class="text-center">
+					<div class="card-body" style="background-color:#7218D0;color:white;">
+						<i style="margin-bottom:1%;" class="far fa-handshake fa-5x"></i>
+						<h5 class="card-title">Improve your customer response</h5>
+						<p class="card-text">Use Flute to unlock hidden gems in data your organisation possess, that can lead to understanding your customers needs betters.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!--Privacy section-->
+<section>
+
+	<div class="text-center" style="margin-top:2%;margin-bottom:2%;">
+		<h4 class="display-4"><strong>Privacy</strong></h4>
+
+		<br />
+
+		<p class="display-4">Here at Flute, we can about your privacy when dealing with your data.</p>
+
+		<br />
+
+		<h4>Storage of data</h4>
+		<br />
+
+		<p>We take security very seriously, we take many precautions when dealing with your training information. These include:</p>
+
+		<p>Transmitting your training data using encrypted channels.</p>
+		<p>Encrypting training data at rest.</p>
+		<p>Scrubbing training files once trained: - once we train your model, we save the model file for re-use in encrypted storage, then, we permanently delete every instance of your training data.</p>
+
+		<p style="font-weight:bold">
+			NOTE: 
+			We encourage your to review your training data carefully before uploading it, ask yourself 'Are Jane's first name, last name and D.O.B really helpful features to train this model?'
+		</p>
+	</div>
+
+</section>

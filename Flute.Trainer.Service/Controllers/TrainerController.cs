@@ -19,29 +19,42 @@ namespace Flute.Trainer.Service.Controllers
 
 		private readonly IMLTrainerService _trainerService;
 		private readonly IBlobStorageService _blobService;
-		public TrainerController(IMLTrainerService mLTrainerService, IBlobStorageService blobStorageService)
+		private readonly IUserRepoistory _userRepo;
+		private readonly ITrainedModelRepoistory _trainedModelRepo;
+		public TrainerController(IMLTrainerService mLTrainerService, IBlobStorageService blobStorageService,
+								IUserRepoistory userRepoistory, ITrainedModelRepoistory trainedModelRepoistory)
 		{
 			_trainerService = mLTrainerService;
 			_blobService = blobStorageService;
+			_userRepo = userRepoistory;
+			_trainedModelRepo = trainedModelRepoistory;
 		}
 
 		/// <summary>
 		/// API endpoint that will trigger the training of the last model
 		/// </summary>
 		/// <returns></returns>
-		[HttpGet]
+		[HttpPost]
 		[Route(nameof(TrainModel))]
-		public async Task<IActionResult> TrainModel()
+		public async Task<IActionResult> TrainModel([FromBody] UserModelToTrain userModelToTrain)
 		{
 			try
 			{
+				if(string.IsNullOrEmpty(userModelToTrain?.EmailAddress) || userModelToTrain == null)
+				{
+					return new JsonResult("UserModelToTrain model was null or missing email address")
+					{
+						StatusCode = 400
+					};
+				}
+
 				// Step 1: download file from blob storage for training
-				var blobs = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.TrainingFile);
+				var blobs = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.TrainingFile, userModelToTrain?.EmailAddress);
 
 				// Step 2: get reference to downloaded blob
 				using (Stream stream = new MemoryStream())
 				{
-					var blobObject = await _blobService.DownloadBlob(blobs.FirstOrDefault(), stream);
+					var blobObject = await _blobService.DownloadBlob(userModelToTrain?.EmailAddress, blobs.FirstOrDefault(), stream);
 					stream.Seek(0, SeekOrigin.Begin);
 
 					using (var reader = new StreamReader(stream))
@@ -50,11 +63,15 @@ namespace Flute.Trainer.Service.Controllers
 						var records = csv.GetRecords<Shared.Models.TrainedModel>();
 
 						// Step 3: train model on objects
-						var trainedModelSuccessfully = await _trainerService.BuildAndTrainModel(records);
+						var trainedModelSuccessfully = await _trainerService.BuildAndTrainModel(records, userModelToTrain?.EmailAddress);
 
 						if (trainedModelSuccessfully)
 						{
-							return new OkObjectResult("Accepted. Training commencing..");
+							// Commit model id to users record in db
+							string modelId = _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile, userModelToTrain?.EmailAddress).Result.FirstOrDefault();
+							await _trainedModelRepo.AddNewModel(modelId, userModelToTrain?.EmailAddress);
+
+							return new OkObjectResult("Accepted. Training completed successfully.");
 						}
 						else
 						{
@@ -81,6 +98,25 @@ namespace Flute.Trainer.Service.Controllers
 		{
 			try
 			{
+				var apiKeyHeader = Request.Headers["api-key"];
+				if (apiKeyHeader.Any() == false)
+				{
+					return new JsonResult(new ControllerResponse() { Message = "api-key header was missing", ResponseCode = 401 })
+					{
+						StatusCode = 401
+					};
+				}
+
+				// Check if user's api key exists against record
+				var userRecord = _userRepo.GetSingleUserByApiKey(apiKeyHeader.ToString()).Result;
+				if(string.IsNullOrEmpty(userRecord?.EmailAddress))
+				{
+					return new JsonResult(new ControllerResponse() { Message = "User record not found.", ResponseCode = 400 })
+					{
+						StatusCode = 400
+					};
+				}
+
 				if(string.IsNullOrEmpty(model?.ModelId))
 				{
 					return new JsonResult($"Model id {model?.ModelId ?? "Not found"} was not found")
@@ -88,15 +124,10 @@ namespace Flute.Trainer.Service.Controllers
 						StatusCode = 404
 					};
 				}
-				
-				var blob = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile);
-				var oneBlob = blob
-					.Where(a => a == model?.ModelId)
-					.FirstOrDefault();
 
-				var prediction = await _trainerService.UseModelWithSingleItem(model);
+				var prediction = await _trainerService.UseModelWithSingleItem(model, userRecord?.EmailAddress);
 
-				if(!string.IsNullOrEmpty(oneBlob))
+				if(prediction != null)
 				{
 					return new JsonResult(new TrainedModelOutput() { Input = model.PredictionInput.Input, Label = Convert.ToInt32(prediction.Prediction), ModelId = model.ModelId, Score = prediction.Probability })
 					{

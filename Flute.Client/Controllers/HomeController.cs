@@ -6,7 +6,8 @@ using Flute.Client.Constants;
 using Flute.Client.Interfaces;
 using Flute.Shared.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Flute.Client.ViewModels;
 
 namespace Flute.Client.Controllers
 {
@@ -15,20 +16,20 @@ namespace Flute.Client.Controllers
 	{
 		private readonly ITrainerService _trainerService;
 		private readonly IBlobStorageService _blobService;
-		public HomeController(ITrainerService trainerService, IBlobStorageService blobStorageService)
+		private readonly IUserRepoistory _userRepo;
+		private readonly ITrainedModelRepoistory _trainedModelRepo;
+		public HomeController(ITrainerService trainerService, IBlobStorageService blobStorageService,
+							 IUserRepoistory userRepoistory, ITrainedModelRepoistory trainedModelRepoistory)
 		{
 			_trainerService = trainerService;
 			_blobService = blobStorageService;
+			_userRepo = userRepoistory;
+			_trainedModelRepo = trainedModelRepoistory;
 		}
 		
 		[AllowAnonymous]
-		public async Task<IActionResult> Index()
+		public IActionResult Index()
 		{
-			var claims = User.Claims;
-			foreach(var item in claims)
-			{
-				
-			}
 			return View();
 		}
 
@@ -58,14 +59,24 @@ namespace Flute.Client.Controllers
 					TempData["Error"] = ViewConstants.FileWrongFormatMessage;
 				}
 
-				var res = await _trainerService.QueueModel(new Shared.Models.ModelFile() { formFile = file });
+				var usersEmail = User.FindFirst(e => e.Type == ClaimTypes.Email)?.Value;
+
+				// Check if user has uploaded maximum allow models
+				bool maxModelAllowanceExceeded = _trainedModelRepo.MaxAllowedModels(usersEmail).Result;
+				if(maxModelAllowanceExceeded)
+				{
+					TempData["Error"] = "You have reached the limit of models allowed at this time.";
+					return View();
+				}
+					
+				var res = await _trainerService.QueueModel(new Shared.Models.ModelFile() { formFile = file, EmailAddress = usersEmail });
 				if(!res)
 				{
-					TempData["Error"] = "Failed to upload Model, please try again later.";
+					TempData["Error"] = "Failed to upload training file, please try again later.";
+					return View();
 				}
 
-				TempData["Info"] = "Model trained successfully. See 'Models' in the navbar, to consume you're newly trained model.";
-
+				TempData["Info"] = "Model trained successfully. See 'Models' in the navbar, to consume your newly trained model.";
 				return View();
 			}
 			catch (Exception ex)
@@ -76,14 +87,25 @@ namespace Flute.Client.Controllers
 		}
 
 		[Authorize]
-		[HttpGet]
-		public async Task<IActionResult> TestPrediction([FromQuery] string modelId)
+		public async Task<IActionResult> Models()
 		{
 			try
 			{
-				var blobs = await _blobService.ListBlobs(Shared.Services.BlobStorageService.TypeOfBlobUpload.ModelFile);
+				var usersEmail = User.FindFirst(a => a.Type == ClaimTypes.Email)?.Value;
 
-				return View(blobs);
+				// Return models for user
+				var trainedModels = await _trainedModelRepo.ReturnUserModels(usersEmail);
+
+				// Return user record from db
+				var userRecord = await _userRepo.GetSingleUser(usersEmail);
+
+				TrainedModelsViewModel viewModel = new TrainedModelsViewModel()
+				{
+					ListOfTrainedModels = trainedModels,
+					UserRecord = userRecord
+				};
+
+				return View(viewModel);
 			}
 			catch (Exception ex)
 			{

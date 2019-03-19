@@ -36,7 +36,7 @@ namespace Flute.Trainer.Service.Services
 			return Task.FromResult(mlContext.Model.Load(modelStream));
 		}
 
-		public async Task<bool> BuildAndTrainModel(IEnumerable<Flute.Shared.Models.TrainedModel> listOfTrainingObjects)
+		public async Task<bool> BuildAndTrainModel(IEnumerable<Flute.Shared.Models.TrainedModel> listOfTrainingObjects, string usersEmail)
 		{
 			try
 			{
@@ -53,7 +53,7 @@ namespace Flute.Trainer.Service.Services
 
 				var model = pipeline.Fit(splitTrainSet);
 
-				await this.SaveModelAsFile(model);
+				await this.SaveModelAsFile(model, usersEmail);
 
 				return true;
 			}
@@ -63,10 +63,10 @@ namespace Flute.Trainer.Service.Services
 			}
 		}
 
-		public async Task<TrainedModelPrediction> UseModelWithSingleItem(Shared.Models.PredictionModel predictionModel)
+		public async Task<TrainedModelPrediction> UseModelWithSingleItem(Shared.Models.PredictionModel predictionModel, string usersEmail)
 		{
 			// Step 1: download file from blob storage
-			var blobs = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile);
+			var blobs = await _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile, usersEmail);
 			var singleBlob = blobs
 				.Where(a => a == predictionModel?.ModelId)
 				.FirstOrDefault();
@@ -74,7 +74,7 @@ namespace Flute.Trainer.Service.Services
 			// Step 2: get reference to downloaded blob
 			using (Stream stream = new MemoryStream())
 			{
-				var blobObject = await _blobService.DownloadBlob(singleBlob, stream);
+				var blobObject = await _blobService.DownloadBlob(usersEmail, singleBlob, stream);
 				stream.Seek(0, SeekOrigin.Begin);
 
 				await blobObject.CopyToAsync(stream);
@@ -94,14 +94,14 @@ namespace Flute.Trainer.Service.Services
 			}
 		}
 
-		public async Task<bool> SaveModelAsFile(ITransformer model)
+		public async Task<bool> SaveModelAsFile(ITransformer model, string usersEmail)
 		{
 			using (var stream = new MemoryStream())
 			{
 				mlContext.Model.Save(model, stream);
 				stream.Seek(0, SeekOrigin.Begin);
 
-				await _blobService.UploadBlob(stream, BlobStorageService.TypeOfBlobUpload.ModelFile);
+				await _blobService.UploadBlob(stream, BlobStorageService.TypeOfBlobUpload.ModelFile, usersEmail:usersEmail);
 			}
 
 			return true;

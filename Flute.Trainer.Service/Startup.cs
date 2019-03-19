@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Flute.Shared;
+﻿using Flute.Shared;
 using Flute.Shared.Interfaces;
 using Flute.Shared.Services;
 using Flute.Trainer.Service.Interfaces;
@@ -11,17 +7,14 @@ using Flute.Trainer.Service.Repoistory;
 using Flute.Trainer.Service.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace Flute.Trainer.Service
 {
-    public class Startup
+	public class Startup
     {
         public Startup(IConfiguration configuration)
         {

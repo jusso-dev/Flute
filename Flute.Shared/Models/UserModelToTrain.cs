@@ -5,13 +5,12 @@ using System.Text;
 namespace Flute.Shared.Models
 {
 	/// <summary>
-	/// Used for constructing object to generate ML prediction
+	/// POCO that is posted by Flute.Client to backend, to determine what information is need to store training file
+	/// and model file
 	/// </summary>
-	public class PredictionModel
+	public class UserModelToTrain
 	{
-		public TrainedModel PredictionInput { get; set; }
 		public string ModelId { get; set; }
-		public string ApiKey { get; set; }
 		public string EmailAddress { get; set; }
 	}
 }

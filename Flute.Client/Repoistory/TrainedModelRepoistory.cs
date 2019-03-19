@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Flute.Client.Interfaces;
@@ -48,6 +49,34 @@ namespace Flute.Client.Repoistory
 				await _context.SaveChangesAsync();
 
 				return true;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		/// <summary>
+		/// Returns all trained models for a given user
+		/// </summary>
+		/// <param name="usersEmail"></param>
+		/// <returns></returns>
+		public Task<List<UsersUploadedModels>> ReturnUserModels(string usersEmail)
+		{
+			try
+			{
+
+				if(string.IsNullOrEmpty(usersEmail))
+				{
+					return null;
+				}
+
+				var usersModels = _context.UploadedModels
+					.Where(e => e.EmailAddress == usersEmail)
+					.OrderByDescending(a => a.ModelUploadDateTime)
+					.ToList();
+
+				return Task.FromResult(usersModels); 
 			}
 			catch (Exception ex)
 			{

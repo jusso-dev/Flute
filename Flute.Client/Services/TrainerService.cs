@@ -42,12 +42,12 @@ namespace Flute.Client.Services
 					await modelFile.formFile.CopyToAsync(stream);
 					stream.Seek(0, SeekOrigin.Begin);
 
-					await _blobStorageService.UploadBlob(stream, BlobStorageService.TypeOfBlobUpload.TrainingFile, modelFile.formFile.FileName);
+					await _blobStorageService.UploadBlob(stream:stream, typeOfBlobUpload:BlobStorageService.TypeOfBlobUpload.TrainingFile, usersEmail:modelFile?.EmailAddress, fileName:modelFile?.formFile?.FileName);
 				}
 
 				// Step 2: Kick off training by triggering backend, might change this to be redis, not sure yet...
 				var httpclient = _client.CreateClient();
-				var res = await httpclient.GetAsync(ApiBaseUrl + "/Trainer/TrainModel");
+				var res = await httpclient.PostAsJsonAsync<UserModelToTrain>(ApiBaseUrl + "/Trainer/TrainModel", new UserModelToTrain() { EmailAddress = modelFile?.EmailAddress });
 
 				if(res.StatusCode == HttpStatusCode.OK)
 				{
