@@ -11,5 +11,6 @@ namespace Flute.Shared.Interfaces
 		Task<bool> UploadBlob(Stream stream, TypeOfBlobUpload typeOfBlobUpload, string usersEmail, string fileName = null);
 		Task<Stream> DownloadBlob(string usersEmail, string blobName, Stream streamTarget);
 		Task<List<string>> ListBlobs(TypeOfBlobUpload typeOfBlobUpload, string usersEmail);
+		Task<bool> RemoveTrainingFile(string usersEmail);
 	}
 }

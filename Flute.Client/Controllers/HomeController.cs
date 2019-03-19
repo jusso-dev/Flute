@@ -40,11 +40,18 @@ namespace Flute.Client.Controllers
 		}
 
 		[Authorize]
+		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public async Task<IActionResult> Training(IFormFile file)
+		public async Task<IActionResult> Training([FromForm] IFormFile file, [FromForm] string modelName)
 		{
 			try
 			{
+				if(string.IsNullOrEmpty(modelName) || modelName.Length > 20)
+				{
+					TempData["Error"] = "Please provide a meaningful name for your model and ensure the length is less than 20 characters.";
+					return View();
+				}
+
 				// Get reference to csv file, and validate file
 				if(file.Length < 1)
 				{
@@ -65,14 +72,14 @@ namespace Flute.Client.Controllers
 				bool maxModelAllowanceExceeded = _trainedModelRepo.MaxAllowedModels(usersEmail).Result;
 				if(maxModelAllowanceExceeded)
 				{
-					TempData["Error"] = "You have reached the limit of models allowed at this time.";
+					TempData["Error"] = "You have reached the limit of models allowed (5) at this time.";
 					return View();
 				}
 					
-				var res = await _trainerService.QueueModel(new Shared.Models.ModelFile() { formFile = file, EmailAddress = usersEmail });
+				var res = await _trainerService.QueueModel(new Shared.Models.ModelFile() { formFile = file, EmailAddress = usersEmail, ModelName = modelName });
 				if(!res)
 				{
-					TempData["Error"] = "Failed to upload training file, please try again later.";
+					TempData["Error"] = "Failed to upload training file, please try again later. Please also check the format of your data meets the required format.";
 					return View();
 				}
 

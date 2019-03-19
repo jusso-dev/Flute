@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Flute.Trainer.Service.Model;
+using Flute.Shared.Models;
 
-namespace Flute.Trainer.Service.Interfaces
+namespace Flute.Shared.Interfaces
 {
 	public interface ITrainedModelRepoistory
 	{
-		Task<bool> AddNewModel(string modelId, string usersEmail);
+		Task<bool> AddNewModel(string modelId, string usersEmail, string modelFriendlyName);
 		Task<int> CountModelsUploaded(string usersEmail);
 		Task<bool> MaxAllowedModels(string usersEmail);
 		Task<List<UsersUploadedModels>> ReturnUserModels(string usersEmail);

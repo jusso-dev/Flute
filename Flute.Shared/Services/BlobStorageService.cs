@@ -133,5 +133,30 @@ namespace Flute.Shared.Services
 				throw ex;
 			}
 		}
+
+		/// <summary>
+		/// Scrub blob storage of any instance of the training file
+		/// </summary>
+		/// <param name="usersEmail"></param>
+		/// <returns></returns>
+		public async Task<bool> RemoveTrainingFile(string usersEmail)
+		{
+			try
+			{
+				var listOfTrainingFiles = await this.ListBlobs(TypeOfBlobUpload.TrainingFile, usersEmail);
+
+				foreach(var item in listOfTrainingFiles)
+				{
+					CloudBlockBlob cloudBlockBlob = cloudBlobContainer.GetBlockBlobReference(item);
+					await cloudBlockBlob.DeleteIfExistsAsync();
+				}
+
+				return true;
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 	}
 }

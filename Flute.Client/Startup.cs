@@ -1,10 +1,10 @@
 ﻿using Flute.Client.Interfaces;
 using Flute.Client.Models;
-using Flute.Client.Repoistory;
 using Flute.Client.Services;
 using Flute.Shared;
 using Flute.Shared.Interfaces;
 using Flute.Shared.Models;
+using Flute.Shared.Repoistory;
 using Flute.Shared.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
@@ -70,7 +70,9 @@ namespace Flute.Client
 			string connectionString = string.Empty;
 			connectionString = @"Server=(localdb)\mssqllocaldb;Database=FluteUsers;Trusted_Connection=True;ConnectRetryCount=0";
 			services.AddDbContext<UserDbContextContext>
-				(options => options.UseSqlServer(connectionString));
+				(options => options.UseSqlServer(
+				connectionString,
+				x => x.MigrationsAssembly("Flute.Shared")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

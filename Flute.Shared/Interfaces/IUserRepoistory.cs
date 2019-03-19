@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Flute.Trainer.Service.Model;
+using Flute.Shared.Models;
 
-namespace Flute.Trainer.Service.Interfaces
+namespace Flute.Shared.Interfaces
 {
 	public interface IUserRepoistory
 	{

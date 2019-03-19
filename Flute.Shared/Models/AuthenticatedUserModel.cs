@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Flute.Trainer.Service.Model
+namespace Flute.Shared.Models
 {
 	public class AuthenticatedUserModel
 	{
@@ -19,6 +19,7 @@ namespace Flute.Trainer.Service.Model
 		public int Id { get; set; }
 		public string EmailAddress { get; set; }
 		public string ModelId { get; set; }
+		public string ModelFriendlyName { get; set; }
 		public int UploadedModelCount { get; set; }
 		public DateTime ModelUploadDateTime { get; set; }
 	}

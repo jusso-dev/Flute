@@ -36,12 +36,12 @@ namespace Flute.Trainer.Service.Services
 			return Task.FromResult(mlContext.Model.Load(modelStream));
 		}
 
-		public async Task<bool> BuildAndTrainModel(IEnumerable<Flute.Shared.Models.TrainedModel> listOfTrainingObjects, string usersEmail)
+		public async Task<bool> BuildAndTrainModel(List<Shared.Models.TrainedModel> listOfTrainingObjects, string usersEmail)
 		{
 			try
 			{
 				List<TrainedModel> trainedModel = new List<TrainedModel>();
-				foreach(var item in listOfTrainingObjects.ToList())
+				foreach(var item in listOfTrainingObjects)
 				{
 					trainedModel.Add(new TrainedModel() { Input = item?.Input, Label = Convert.ToBoolean(item.Label) });
 				}

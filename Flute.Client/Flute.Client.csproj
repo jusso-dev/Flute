@@ -18,4 +18,9 @@
     <ProjectReference Include="..\Flute.Shared\Flute.Shared.csproj" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="Repoistory\" />
+  </ItemGroup>
+
 </Project>

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Flute.Client.Interfaces;
-using Flute.Client.Models;
 using Flute.Shared.Interfaces;
 using Flute.Shared.Models;
 
-namespace Flute.Client.Repoistory
+namespace Flute.Shared.Repoistory
 {
 	public class UserRepoistory : IUserRepoistory
 	{
@@ -36,6 +34,26 @@ namespace Flute.Client.Repoistory
 			}
 		}
 		
+		public Task<AuthenticatedUserModel> GetSingleUserByApiKey(string apiKey)
+		{
+			try
+			{
+				if (string.IsNullOrEmpty(apiKey))
+					return null;
+
+				var singleUser = _context.Users
+					.Where(a => a.ApiKey == apiKey)
+					.Take(1)
+					.FirstOrDefault();
+
+				return Task.FromResult(singleUser);
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
 		public Task<bool> CheckForExistingUser(string emailAddress)
 		{
 			try
@@ -45,7 +63,8 @@ namespace Flute.Client.Repoistory
 
 				var userRecord = _context.Users
 					.Take(1)
-					.FirstOrDefault(a => a.EmailAddress == emailAddress);
+					.Where(e => e.EmailAddress == emailAddress)
+					.FirstOrDefault();
 
 				if (!string.IsNullOrEmpty(userRecord?.EmailAddress))
 				{

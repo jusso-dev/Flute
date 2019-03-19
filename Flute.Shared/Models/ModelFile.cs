@@ -6,6 +6,6 @@ namespace Flute.Shared.Models
 	{
 		public IFormFile formFile { get; set; }
 		public string EmailAddress { get; set; }
-
+		public string ModelName { get; set; }
 	}
 }

@@ -11,3 +11,4 @@ C:\Users\A_Justin.Midler\Desktop\Flute\Flute.OcelotGateway\obj\Debug\netcoreapp2
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.OcelotGateway\obj\Debug\netcoreapp2.2\Flute.OcelotGateway.RazorTargetAssemblyInfo.cache
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.OcelotGateway\obj\Debug\netcoreapp2.2\Flute.OcelotGateway.dll
 C:\Users\A_Justin.Midler\Desktop\Flute\Flute.OcelotGateway\obj\Debug\netcoreapp2.2\Flute.OcelotGateway.pdb
+C:\Users\A_Justin.Midler\Desktop\Flute\Flute.OcelotGateway\obj\Debug\netcoreapp2.2\Flute.OcelotGateway.csprojAssemblyReference.cache

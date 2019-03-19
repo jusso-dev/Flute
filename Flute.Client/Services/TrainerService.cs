@@ -47,7 +47,11 @@ namespace Flute.Client.Services
 
 				// Step 2: Kick off training by triggering backend, might change this to be redis, not sure yet...
 				var httpclient = _client.CreateClient();
-				var res = await httpclient.PostAsJsonAsync<UserModelToTrain>(ApiBaseUrl + "/Trainer/TrainModel", new UserModelToTrain() { EmailAddress = modelFile?.EmailAddress });
+
+				var res = await httpclient.PostAsJsonAsync<UserModelToTrain>(ApiBaseUrl + "/Trainer/TrainModel", new UserModelToTrain()
+				{   EmailAddress = modelFile?.EmailAddress,
+					ModelName = modelFile?.ModelName
+				});
 
 				if(res.StatusCode == HttpStatusCode.OK)
 				{

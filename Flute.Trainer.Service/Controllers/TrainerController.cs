@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -42,7 +41,7 @@ namespace Flute.Trainer.Service.Controllers
 			{
 				if(string.IsNullOrEmpty(userModelToTrain?.EmailAddress) || userModelToTrain == null)
 				{
-					return new JsonResult("UserModelToTrain model was null or missing email address")
+					return new JsonResult(new ControllerResponse() { Message = "UserModelToTrain model was null or missing email address", ResponseCode = 400 })
 					{
 						StatusCode = 400
 					};
@@ -60,7 +59,7 @@ namespace Flute.Trainer.Service.Controllers
 					using (var reader = new StreamReader(stream))
 					using (var csv = new CsvReader(reader))
 					{
-						var records = csv.GetRecords<Shared.Models.TrainedModel>();
+						var records = csv.GetRecords<Shared.Models.TrainedModel>().ToList();
 
 						// Step 3: train model on objects
 						var trainedModelSuccessfully = await _trainerService.BuildAndTrainModel(records, userModelToTrain?.EmailAddress);
@@ -69,13 +68,16 @@ namespace Flute.Trainer.Service.Controllers
 						{
 							// Commit model id to users record in db
 							string modelId = _blobService.ListBlobs(BlobStorageService.TypeOfBlobUpload.ModelFile, userModelToTrain?.EmailAddress).Result.FirstOrDefault();
-							await _trainedModelRepo.AddNewModel(modelId, userModelToTrain?.EmailAddress);
+							await _trainedModelRepo.AddNewModel(modelId, userModelToTrain?.EmailAddress, userModelToTrain?.ModelFriendlyName);
 
-							return new OkObjectResult("Accepted. Training completed successfully.");
+							// Delete any training files for user
+							await _blobService.RemoveTrainingFile(userModelToTrain?.EmailAddress);
+
+							return new OkObjectResult(new ControllerResponse() { Message = "Accepted. Training completed successfully.", ResponseCode = 200 });
 						}
 						else
 						{
-							return new JsonResult("Something went wrong.")
+							return new JsonResult(new ControllerResponse() { Message = "Something went wrong.", ResponseCode = 500 })
 							{
 								StatusCode = 500
 							};
@@ -85,7 +87,7 @@ namespace Flute.Trainer.Service.Controllers
 			}
 			catch (Exception ex)
 			{
-				return new JsonResult(ex.Message)
+				return new JsonResult(new ControllerResponse() { Message = "An error occurred training, please try again later.", ResponseCode = 500 })
 				{
 					StatusCode = 500
 				};
@@ -119,7 +121,7 @@ namespace Flute.Trainer.Service.Controllers
 
 				if(string.IsNullOrEmpty(model?.ModelId))
 				{
-					return new JsonResult($"Model id {model?.ModelId ?? "Not found"} was not found")
+					return new JsonResult(new ControllerResponse() { Message = $"Model id {model?.ModelId ?? "Not found"} was not found", ResponseCode = 404 })
 					{
 						StatusCode = 404
 					};
@@ -136,15 +138,15 @@ namespace Flute.Trainer.Service.Controllers
 				}
 				else
 				{
-					return new JsonResult($"Model id {model?.ModelId} not found")
+					return new JsonResult(new ControllerResponse() { Message = $"Model id {model?.ModelId} not found", ResponseCode = 404 })
 					{
 						StatusCode = 404
 					};
 				}
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
-				return new JsonResult(ex.Message)
+				return new JsonResult(new ControllerResponse() { Message = "An error occurred whilst retrieving a prediction, please try again later.", ResponseCode = 500 })
 				{
 					StatusCode = 500
 				};

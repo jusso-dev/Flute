@@ -10,7 +10,8 @@ namespace Flute.Shared.Models
 	/// </summary>
 	public class UserModelToTrain
 	{
-		public string ModelId { get; set; }
 		public string EmailAddress { get; set; }
+		public string ModelName { get; set; }
+		public string ModelFriendlyName { get; set; }
 	}
 }

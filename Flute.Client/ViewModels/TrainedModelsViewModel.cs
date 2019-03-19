@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Flute.Client.Models;
+using Flute.Shared.Models;
 
 namespace Flute.Client.ViewModels
 {

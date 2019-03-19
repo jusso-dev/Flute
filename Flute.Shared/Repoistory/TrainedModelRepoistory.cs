@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Flute.Trainer.Service.Interfaces;
-using Flute.Trainer.Service.Model;
+using Flute.Shared.Interfaces;
+using Flute.Shared.Models;
 
-namespace Flute.Trainer.Service.Repoistory
+namespace Flute.Shared.Repoistory
 {
 	public class TrainedModelRepoistory : ITrainedModelRepoistory
 	{
@@ -22,7 +22,7 @@ namespace Flute.Trainer.Service.Repoistory
 		/// <param name="modelId"></param>
 		/// <returns></returns>
 		
-		public async Task<bool> AddNewModel(string modelId, string usersEmail)
+		public async Task<bool> AddNewModel(string modelId, string usersEmail, string modelFriendlyName)
 		{
 			try
 			{
@@ -41,7 +41,8 @@ namespace Flute.Trainer.Service.Repoistory
 				{	EmailAddress = usersEmail,
 					ModelId = modelId,
 					ModelUploadDateTime = DateTime.UtcNow,
-					UploadedModelCount = this.CountModelsUploaded(usersEmail).Result + 1
+					UploadedModelCount = this.CountModelsUploaded(usersEmail).Result,
+					ModelFriendlyName = modelFriendlyName
 				});
 
 				await _context.SaveChangesAsync();
@@ -64,7 +65,7 @@ namespace Flute.Trainer.Service.Repoistory
 			try
 			{
 
-				if (string.IsNullOrEmpty(usersEmail))
+				if(string.IsNullOrEmpty(usersEmail))
 				{
 					return null;
 				}
@@ -74,7 +75,7 @@ namespace Flute.Trainer.Service.Repoistory
 					.OrderByDescending(a => a.ModelUploadDateTime)
 					.ToList();
 
-				return Task.FromResult(usersModels);
+				return Task.FromResult(usersModels); 
 			}
 			catch (Exception ex)
 			{
@@ -91,10 +92,11 @@ namespace Flute.Trainer.Service.Repoistory
 		{
 			try
 			{
-				var countOfModels = _context.UploadedModels
+				int countOfModels = _context.UploadedModels
+					.Take(1)
 					.Where(e => e.EmailAddress == usersEmail)
-					.ToList()
-					.Count;
+					.FirstOrDefault()
+					.UploadedModelCount;
 
 				return Task.FromResult(countOfModels);
 			}

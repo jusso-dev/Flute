@@ -1,7 +1,7 @@
 ﻿using Flute.Shared.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Flute.Client.Models
+namespace Flute.Shared.Models
 {
 	public class UserDbContextContext : DbContext
 	{
