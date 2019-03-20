@@ -50,7 +50,7 @@ namespace Flute.Client.Services
 
 				var res = await httpclient.PostAsJsonAsync<UserModelToTrain>(ApiBaseUrl + "/Trainer/TrainModel", new UserModelToTrain()
 				{   EmailAddress = modelFile?.EmailAddress,
-					ModelName = modelFile?.ModelName
+					ModelFriendlyName = modelFile?.ModelFriendlyName
 				});
 
 				if(res.StatusCode == HttpStatusCode.OK)

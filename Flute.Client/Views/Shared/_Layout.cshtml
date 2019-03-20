@@ -23,14 +23,10 @@
 	<header>
 		<nav style="background-color:#7218D0;" class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
 			<div class="container">
-				@if (User.Identity.IsAuthenticated)
-				{
-					<a style="margin-right:5%;" class="nav-link text-light">Welcome back @User.Identity?.Name.Split(" ")[0]</a>
-				}
 				<a style="color:white;" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Flute</a>
-				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+				<button style="background-color:white;" class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
+					<span style="color:black;" class="navbar-toggler-icon"></span>
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
 					<ul class="navbar-nav flex-grow-1">
@@ -45,9 +41,8 @@
 							<li class="nav-item">
 								<a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Models">Models</a>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-							</li>
+							<a class="nav-link text-light" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+							<a class="nav-link text-light">Welcome back @User.Identity?.Name.Split(" ")[0]</a>
 						}
 						else
 						{

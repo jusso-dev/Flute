@@ -29,18 +29,18 @@ namespace Flute.Client
 
 		public IConfiguration Configuration { get; }
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			var _config = new ConfigurationReader();
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
-				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
 				options.CheckConsentNeeded = context => true;
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 				options.HttpOnly = HttpOnlyPolicy.Always;
 			});
+
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 			services.AddSingleton<IBlobStorageService, BlobStorageService>();
 			services.AddSingleton<IConfigurationReader, ConfigurationReader>();
@@ -49,13 +49,16 @@ namespace Flute.Client
 			services.AddScoped<IUserRepoistory, UserRepoistory>();
 			services.AddScoped<ITrainedModelRepoistory, TrainedModelRepoistory>();
 
-			services.AddAuthentication(sharedOptions =>
+			services.AddAuthentication(options =>
 			{
-				sharedOptions.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-				sharedOptions.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-				sharedOptions.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+				options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 			})
-			.AddCookie()
+
+			.AddCookie(options =>
+			{
+				options.LoginPath = "/account/login";
+				options.LogoutPath = "/account/logout";
+			})
 			.AddGoogle(googleOptions => 
 			{
 				googleOptions.ClientId = _config.ReadConfigurationAsync(ConfigurationReader.GoogleClientId, readFromKeyVault:false).Result;
@@ -75,7 +78,6 @@ namespace Flute.Client
 				x => x.MigrationsAssembly("Flute.Shared")));
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
 			if (env.IsDevelopment())

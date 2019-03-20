@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Flute.Client.Interfaces;
 using Flute.Shared.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Mvc;
@@ -34,12 +35,8 @@ namespace Flute.Client.Controllers
 
 		public IActionResult Logout()
 		{
-			if (HttpContext.User.Identity.IsAuthenticated)
-			{
-				return SignOut(GoogleDefaults.AuthenticationScheme);
-			}
-
-			return RedirectToAction("Index", "Home");
+			return SignOut(new AuthenticationProperties { RedirectUri = "/" },
+				CookieAuthenticationDefaults.AuthenticationScheme);
 		}
 	}
 }

@@ -4,96 +4,205 @@
 </head>
 
 <body>
+
+	<!--Heading section-->
 	<section>
 		<div class="text-center">
 			<h1 style="margin-top:2%;">
-				Binary Neural Network Training
+				Choose a network to train below
 			</h1>
+		</div>
+	</section>
 
-			<br />
-			<p>
-				To get started, please upload a  .csv file that is no more than 2 mb.
-				<br />
-
-			</p>
-
-			<br />
-
-			<p>
-				Example file format, <em>please ensure you title your headers as shown below.</em>
-				<br />
-				1 indicates positive in this case, and 0 indicates a negative review. You can upload any form of data, however the first column should be a string, followed by the second column being an integer.
-			</p>
-			<br />
-
-			<div class="col-md-4" style="margin-left:auto;margin-right:auto;">
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th scope="col">Input</th>
-							<th scope="col">Label</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>The movie today was great!</td>
-							<td>1</td>
-						</tr>
-						<tr>
-							<td>The movie sucked! worst movie ever.</td>
-							<td>0</td>
-						</tr>
-					</tbody>
-				</table>
+	<div class="text-center" style="margin-top:2%;margin-bottom:2%;">
+		@if (!string.IsNullOrEmpty(TempData["Error"]?.ToString()))
+		{
+			<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
+				<div class="alert alert-danger">
+					@TempData["Error"]?.ToString()
+				</div>
 			</div>
+		}
+
+		@if (!string.IsNullOrEmpty(TempData["Info"]?.ToString()))
+		{
+			<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
+				<div class="alert alert-info">
+					@TempData["Info"]?.ToString()
+				</div>
+			</div>
+		}
+	</div>
+
+	<!--Collapse choices section-->
+	<section>
+		<div style="margin-top:2%;" class="text-center">
+			<p>
+				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseBinary" aria-expanded="false" aria-controls="collapseExample">
+					Binary Neural Network Training
+				</button>
+
+				<br />
+				<br />
+
+				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseMultiClass" aria-expanded="false" aria-controls="collapseExample">
+					Multi-class Neural Network Training
+				</button>
+			</p>
+		</div>
+	</section>
+
+	<!--Binary Classification Training section-->
+	<section>
+		<div style="margin-top:2%;" class="text-center">
+			<div class="collapse" id="collapseBinary">
+				<h1 style="margin-top:2%;">
+					Binary Neural Network Training
+				</h1>
+
+				<br />
+				<p>
+					To get started, please upload a  .csv file that is no more than 2 mb.
+					<br />
+				</p>
+
+				<br />
+
+				<p>
+					Example file format, <em>please ensure you title your headers as shown below.</em>
+					<br />
+					1 indicates positive in this case, and 0 indicates a negative review. You can upload any form of data, however the first column should be a string, followed by the second column being an integer.
+				</p>
+				<br />
+
+				<div class="col-md-4" style="margin-left:auto;margin-right:auto;">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Input</th>
+								<th scope="col">Label</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>The movie today was great!</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>The movie sucked! worst movie ever.</td>
+								<td>0</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
 
-			<br />
+				<br />
 
-			<div class="text-center">
-				@if (!string.IsNullOrEmpty(TempData["Error"]?.ToString()))
-				{
-					<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
-						<div class="alert alert-danger">
-							@TempData["Error"]?.ToString()
+				<div class="col-md-4" style="margin-left:auto;margin-right:auto;">
+					<form enctype="multipart/form-data" asp-controller="Home" asp-action="TrainingPost">
+						<div class="form-group">
+							<div class="col-md-10">
+								<h5 style="margin-top:2%;margin-bottom:2%;">Upload Training File</h5>
+								<input type="file" name="file" accept=".csv" required />
+							</div>
 						</div>
-					</div>
-				}
-
-				@if (!string.IsNullOrEmpty(TempData["Info"]?.ToString()))
-				{
-					<div style="margin-top:1%;margin-bottom:1%;" class="col-md-12">
-						<div class="alert alert-info">
-							@TempData["Info"]?.ToString()
+						<div class="form-group">
+							<div class="col-md-10">
+								<h5 style="margin-top:2%;margin-bottom:2%;">Give your model a name</h5>
+								<input type="text" name="modelName" maxlength="20" required />
+							</div>
 						</div>
-					</div>
-				}
+						<div class="form-group">
+							<div class="col-md-10">
+								<input style="background-color:#14BAF8" class="btn btn-info" type="submit" value="Upload" />
+							</div>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
+	</section>
 
-		<section>
-			<div class="col-md-4" style="margin-left:auto;margin-right:auto;">
-				<form enctype="multipart/form-data" asp-controller="Home" asp-action="TrainingPost">
-					<div class="form-group">
-						<div class="col-md-10">
-							<h4 style="margin-top:2%;margin-bottom:2%;" class="display-4">Upload Training File</h4>
-							<input type="file" name="file" accept=".csv" required />
+	<!--Multi-class Training Section-->
+	<section>
+		<div style="margin-top:2%;" class="text-center">
+			<div class="collapse" id="collapseMultiClass">
+				<h1 style="margin-top:2%;">
+					Multi-class Neural Network Training
+				</h1>
+
+				<br />
+				<p>
+					To get started, please upload a  .csv file that is no more than 2 mb.
+					<br />
+				</p>
+
+				<br />
+
+				<p>
+					Example file format, <em>please ensure you title your headers as shown below.</em>
+					<br />
+					Please ensure you have at least four inputs to determine the label.
+					<br />
+					Below, an example is provided to determine what features determine what type of Programming Language is required to be classified.
+				</p>
+				<br />
+
+				<div class="col-md-4" style="margin-left:auto;margin-right:auto;">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">Input</th>
+								<th scope="col">Input-1</th>
+								<th scope="col">Input-2</th>
+								<th scope="col">Input-3</th>
+								<th scope="col">Label</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Compiled Just In Time</td>
+								<td>Strongly Type</td>
+								<td>Encourages types to be used</td>
+								<td>Created by Microsoft</td>
+								<td>.NET C#</td>
+							</tr>
+							<tr>
+								<td>Compiled Ahead Of Time</td>
+								<td>Weakly Type</td>
+								<td>Type definitions are not used by default</td>
+								<td>Created by Mozilla</td>
+								<td>ECHMA Script</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<br />
+
+				<div class="col-md-4" style="margin-left:auto;margin-right:auto;">
+					<form enctype="multipart/form-data" asp-controller="Home" asp-action="TrainingPost">
+						<div class="form-group">
+							<div class="col-md-10">
+								<h5 style="margin-top:2%;margin-bottom:2%;">Upload Training File</h5>
+								<input type="file" name="file" accept=".csv" required />
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-10">
-							<h4 style="margin-top:2%;margin-bottom:2%;" class="display-4">Give your model a name</h4>
-							<input type="text" name="modelName" maxlength="20" required  />
+						<div class="form-group">
+							<div class="col-md-10">
+								<h5 style="margin-top:2%;margin-bottom:2%;">Give your model a name</h5>
+								<input type="text" name="modelName" maxlength="20" required />
+							</div>
 						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-10">
-							<input style="background-color:#14BAF8" class="btn btn-info" type="submit" value="Upload" />
+						<div class="form-group">
+							<div class="col-md-10">
+								<input style="background-color:#14BAF8" class="btn btn-info" type="submit" value="Upload" />
+							</div>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
-		</section>
-
+		</div>
 	</section>
 </body>

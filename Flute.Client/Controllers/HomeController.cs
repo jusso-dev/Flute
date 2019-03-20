@@ -76,7 +76,7 @@ namespace Flute.Client.Controllers
 					return View();
 				}
 					
-				var res = await _trainerService.QueueModel(new Shared.Models.ModelFile() { formFile = file, EmailAddress = usersEmail, ModelName = modelName });
+				var res = await _trainerService.QueueModel(new Shared.Models.ModelFile() { formFile = file, EmailAddress = usersEmail, ModelFriendlyName = modelName });
 				if(!res)
 				{
 					TempData["Error"] = "Failed to upload training file, please try again later. Please also check the format of your data meets the required format.";
@@ -109,7 +109,8 @@ namespace Flute.Client.Controllers
 				TrainedModelsViewModel viewModel = new TrainedModelsViewModel()
 				{
 					ListOfTrainedModels = trainedModels,
-					UserRecord = userRecord
+					UserRecord = userRecord,
+					CurrentHostName = HttpContext.Request.Host.ToString()
 				};
 
 				return View(viewModel);

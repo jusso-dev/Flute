@@ -8,5 +8,6 @@ namespace Flute.Client.ViewModels
 	{
 		public List<UsersUploadedModels> ListOfTrainedModels { get; set; }
 		public AuthenticatedUserModel UserRecord { get; set; }
+		public string CurrentHostName { get; set; }
 	}
 }

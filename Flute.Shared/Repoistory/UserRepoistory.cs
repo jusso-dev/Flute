@@ -23,7 +23,6 @@ namespace Flute.Shared.Repoistory
 
 				var singleUser = _context.Users
 					.Where(e => e.EmailAddress == emailAddress)
-					.Take(1)
 					.FirstOrDefault();
 
 				return Task.FromResult(singleUser);
@@ -43,7 +42,6 @@ namespace Flute.Shared.Repoistory
 
 				var singleUser = _context.Users
 					.Where(a => a.ApiKey == apiKey)
-					.Take(1)
 					.FirstOrDefault();
 
 				return Task.FromResult(singleUser);
@@ -62,17 +60,17 @@ namespace Flute.Shared.Repoistory
 					return null;
 
 				var userRecord = _context.Users
-					.Take(1)
 					.Where(e => e.EmailAddress == emailAddress)
-					.FirstOrDefault();
+					?.FirstOrDefault();
 
-				if (!string.IsNullOrEmpty(userRecord?.EmailAddress))
+				// If user doesn't exist
+				if (userRecord == null)
 				{
-					return Task.FromResult(true);
+					return Task.FromResult(false);
 				}
 				else
 				{
-					return Task.FromResult(false);
+					return Task.FromResult(true);
 				}
 			}
 			catch (Exception ex)
@@ -86,10 +84,14 @@ namespace Flute.Shared.Repoistory
 			try
 			{
 				if(string.IsNullOrEmpty(emailAddress))
+				{
 					return false;
+				}
 
 				if(this.CheckForExistingUser(emailAddress).Result)
+				{
 					return false;
+				}
 
 				await _context.Users.AddAsync(new AuthenticatedUserModel()
 				{	EmailAddress = emailAddress,

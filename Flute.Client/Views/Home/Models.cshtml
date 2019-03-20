@@ -10,7 +10,7 @@
 	<section style="margin-top:2%;">
 		<div class="text-center">
 			<h1>
-				Binary Neural Network Trained Models
+				Trained Models
 			</h1>
 
 			<br />
@@ -20,12 +20,17 @@
 			</p>
 			<br />
 
+			<p>API KEY - @Model.UserRecord.ApiKey</p>
+			<p><strong>Please store this in a safe location.</strong></p>
+
+			<br />
 			<div class="col-md-4" style="margin-left:auto;margin-right:auto">
 				<table class="table table-striped">
 					<thead>
 						<tr>
 							<th scope="col">Model ID</th>
-							<th scope="col">Model Uploaded Time</th>
+							<th scope="col">Model friendly name</th>
+							<th scope="col">Model Uploaded Time - (UTC)</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -33,8 +38,8 @@
 						{
 							<tr>
 								<td>@item.ModelId</td>
-								<td>@item.ModelUploadDateTime</td>
 								<td>@item.ModelFriendlyName</td>
+								<td>@item.ModelUploadDateTime</td>
 							</tr>
 						}
 					</tbody>
@@ -62,4 +67,26 @@
 			}
 		</div>
 	</section>
+
+	<!--Code example section-->
+	<section>
+		<div class="text-center">
+
+			<h4 style="margin-bottom:1%;">Curl example</h4>
+
+			<pre class="embedcurl">curl -X POST \
+				  https://@Model.CurrentHostName/api/Trainer/Predict \
+				  -H 'Content-Type: application/json' \
+				  -H 'api-key: @Model.UserRecord.ApiKey' \
+				  -H 'cache-control: no-cache' \
+				  -d '{
+					"ModelId": "@Model.ListOfTrainedModels.FirstOrDefault().ModelId",
+					"PredictionInput": {
+						"Input": "'your input goes here'"
+					}
+				}'</pre>
+		</div>
+	</section>
+
+	<script src="https://www.embedcurl.com/embedcurl.min.js" async></script>
 </body>

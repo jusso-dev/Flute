@@ -41,7 +41,7 @@ namespace Flute.Shared.Repoistory
 				{	EmailAddress = usersEmail,
 					ModelId = modelId,
 					ModelUploadDateTime = DateTime.UtcNow,
-					UploadedModelCount = this.CountModelsUploaded(usersEmail).Result,
+					UploadedModelCount = this.ReturnUserModels(usersEmail).Result.Count,
 					ModelFriendlyName = modelFriendlyName
 				});
 
@@ -88,15 +88,13 @@ namespace Flute.Shared.Repoistory
 		/// </summary>
 		/// <param name="usersEmail"></param>
 		/// <returns></returns>
-		public Task<int> CountModelsUploaded(string usersEmail)
+		public Task<UsersUploadedModels> CountModelsUploaded(string usersEmail)
 		{
 			try
 			{
-				int countOfModels = _context.UploadedModels
-					.Take(1)
+				var countOfModels = _context.UploadedModels
 					.Where(e => e.EmailAddress == usersEmail)
-					.FirstOrDefault()
-					.UploadedModelCount;
+					?.FirstOrDefault();
 
 				return Task.FromResult(countOfModels);
 			}

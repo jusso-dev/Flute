@@ -11,7 +11,6 @@ namespace Flute.Shared.Models
 	public class UserModelToTrain
 	{
 		public string EmailAddress { get; set; }
-		public string ModelName { get; set; }
 		public string ModelFriendlyName { get; set; }
 	}
 }
