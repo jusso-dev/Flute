@@ -1,6 +1,4 @@
 # Flute
-Flute - a simple interface for creating, training and deploying machine learning models
+Flute - a simple interface for creating, training and deploying machine learning models levering [ML.NET](https://dotnet.microsoft.com/en-us/apps/machinelearning-ai/ml-dotnet)
 
-## TODO - write about local developement using containers
-
-## TODO - how to get started
+![Flute Diagram](flute-diagram.jpeg)
